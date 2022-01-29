@@ -1,6 +1,4 @@
 {
-    "extension.displayName": "Japanese Novel",
-    "extension.description": "An extension for writing novels in Japanese.",
     "extension.language.alias": "Japanese Novel",
     "extension.command.category": "Japanese Novel",
     "extension.command.insertRuby.title": "Insert Ruby",

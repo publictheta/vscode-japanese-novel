@@ -1,6 +1,4 @@
 {
-    "extension.displayName": "小説",
-    "extension.description": "日本語の小説を書くための拡張機能です。",
     "extension.language.alias": "小説",
     "extension.command.category": "小説",
     "extension.command.insertRuby.title": "ルビを振る",
