@@ -1,0 +1,12 @@
+{
+    "ルビを挿入する": {
+        "prefix": ["ルビ", "るび", "ruby"],
+        "body": "｜${TM_SELECTED_TEXT:${1:テキスト}}《${2:ルビ}》$0",
+        "description": "ルビを挿入します"
+    },
+    "傍点を挿入する": {
+        "prefix": ["傍点", "ぼうてん", "dots"],
+        "body": "《《${1:${TM_SELECTED_TEXT}}》》$0",
+        "description": "傍点を挿入します"
+    }
+}

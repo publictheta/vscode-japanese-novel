@@ -1,0 +1,71 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$ts-webpack"
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "group": "build",
+            "isBackground": true,
+            "problemMatcher": "$ts-webpack-watch"
+        },
+        {
+            "type": "npm",
+            "script": "check",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "lint",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "format",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "precommit",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "test:browser",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "test:node",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "browser:chromium",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "browser:firefox",
+            "group": "test"
+        },
+        {
+            "type": "npm",
+            "script": "browser:webkit",
+            "group": "test"
+        }
+    ]
+}

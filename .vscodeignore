@@ -1,0 +1,14 @@
+.vscode/**
+.vscode-test/**
+.vscode-test-web/**
+node_modules/**
+out/**
+src/**
+.eslintcache*
+.eslintignore
+.prettierignore
+.prettierrc.json
+*.tsbuildinfo
+**/tsconfig*.json
+**/.eslintrc*.json
+**/webpack.config*.js

@@ -1,0 +1,63 @@
+{
+    "name": "小説",
+    "scopeName": "text.japanese-novel",
+    "patterns": [
+        {
+            "name": "meta.ruby.explicit",
+            "match": "([|｜])([^|｜《》\n\r]+)(《)([^《》\n\r]+)(》)",
+            "comment": "ルビ",
+            "captures": {
+                "1": {
+                    "name": "keyword"
+                },
+                "2": {
+                    "name": "string"
+                },
+                "3": {
+                    "name": "keyword"
+                },
+                "4": {
+                    "name": "string"
+                },
+                "5": {
+                    "name": "keyword"
+                }
+            }
+        },
+        {
+            "name": "meta.ruby.kanji",
+            "match": "([\\p{Han}〆ヶ]+)(《)([^《》\n\r]+)(》)",
+            "comment": "ルビ（漢字）",
+            "captures": {
+                "1": {
+                    "name": "string"
+                },
+                "2": {
+                    "name": "keyword"
+                },
+                "3": {
+                    "name": "string"
+                },
+                "4": {
+                    "name": "keyword"
+                }
+            }
+        },
+        {
+            "name": "meta.emphasis.dot",
+            "match": "(?:^|[^|｜])(《《)([^\n\r]+?)(》》)",
+            "comment": "傍点",
+            "captures": {
+                "1": {
+                    "name": "keyword"
+                },
+                "2": {
+                    "name": "string"
+                },
+                "3": {
+                    "name": "keyword"
+                }
+            }
+        }
+    ]
+}

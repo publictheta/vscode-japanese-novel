@@ -1,0 +1,82 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 24px;
+    font-family: var(--preview-font-family, --vscode-font-family);
+    font-size: var(--preview-font-size, --vscode-font-size);
+    line-height: var(--preview-line-height, 1.8);
+}
+
+p {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    white-space: pre-wrap;
+}
+
+p.preview-selected::before {
+    content: "";
+    position: absolute;
+    display: block;
+}
+
+em {
+    font-style: normal;
+}
+
+em span {
+    position: relative;
+}
+
+em span::before {
+    content: "・";
+    position: absolute;
+}
+
+.preview-horizontal {
+    writing-mode: horizontal-tb;
+
+    p.preview-selected::before {
+        top: 0;
+        left: -12px;
+        height: 100%;
+        border-left: 3px solid var(--vscode-editor-foreground);
+    }
+
+    em span::before {
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -62.5%);
+    }
+}
+
+.preview-vertical {
+    writing-mode: vertical-rl;
+
+    p.preview-selected::before {
+        top: -12px;
+        left: 0;
+        width: 100%;
+        border-top: 3px solid var(--vscode-editor-foreground);
+    }
+
+    em span::before {
+        top: 50%;
+        left: 0;
+        transform: translate(22.5%, -50%);
+    }
+}
