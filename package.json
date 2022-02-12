@@ -26,9 +26,9 @@
     "keywords": [
         "japanese",
         "novel",
-        "writing",
         "日本語",
-        "小説"
+        "小説",
+        "Markdown"
     ],
     "engines": {
         "vscode": "^1.63.0"
