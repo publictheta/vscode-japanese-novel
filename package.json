@@ -78,6 +78,13 @@
                 "language": "japanese-novel",
                 "scopeName": "text.japanese-novel",
                 "path": "./syntaxes/japanese-novel.tmLanguage.json"
+            },
+            {
+                "scopeName": "markdown.japanese-novel.inline",
+                "path": "./syntaxes/markdown-japanese-novel-inline.tmLanguage.json",
+                "injectTo": [
+                    "text.html.markdown"
+                ]
             }
         ],
         "snippets": [
@@ -97,6 +104,10 @@
                 "editor.wrappingIndent": "none"
             }
         },
+        "markdown.markdownItPlugins": true,
+        "markdown.previewStyles": [
+            "./dist/styles/markdown/preview.css"
+        ],
         "commands": [
             {
                 "command": "japanese-novel.insertRuby",
@@ -475,6 +486,11 @@
                     ],
                     "description": "%extension.configuration.notification.display.errorCopyClipboard.description%",
                     "scope": "resource"
+                },
+                "markdown.japanese-novel.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "%extension.configuration.markdown.enabled.description%"
                 }
             }
         }
@@ -499,6 +515,7 @@
     "devDependencies": {
         "@types/assert": "^1.5.6",
         "@types/glob": "^7.2.0",
+        "@types/markdown-it": "^12.2.3",
         "@types/mocha": "^9.0.0",
         "@types/node": "^16.11.6",
         "@types/vscode": "^1.61.0",

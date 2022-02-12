@@ -31,5 +31,6 @@
     "extension.configuration.notification.display.errorEditNotSingleLine.description": "行をまたいで編集を適用しようとしたときのエラーメッセージの表示を制御します。",
     "extension.configuration.notification.display.errorEditContainSpecialCharacter.description": "特殊な文字を含むテキストに編集を適用しようとしたときのエラーメッセージの表示を制御します。",
     "extension.configuration.notification.display.errorEditOther.description": "その他の編集適用時のエラーメッセージの表示を制御します。",
-    "extension.configuration.notification.display.errorCopyClipboard.description": "クリップボードへのコピーに失敗したときのエラーメッセージの表示を制御します。"
+    "extension.configuration.notification.display.errorCopyClipboard.description": "クリップボードへのコピーに失敗したときのエラーメッセージの表示を制御します。",
+    "extension.configuration.markdown.enabled.description": "組み込みのMarkdownプレビューでの小説記法のレンダリングを有効/無効にします。"
 }

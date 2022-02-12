@@ -31,5 +31,6 @@
     "extension.configuration.notification.display.errorEditNotSingleLine.description": "Controls the display of the error message when attempting to apply a edit across lines.",
     "extension.configuration.notification.display.errorEditContainSpecialCharacter.description": "Controls the display of the error message attempting to apply a edit to text containing special characters.",
     "extension.configuration.notification.display.errorEditOther.description": "Controls the display of the other error messages when applying edits.",
-    "extension.configuration.notification.display.errorCopyClipboard.description": "Controls the display of the error message when copying to the clipboard fails."
+    "extension.configuration.notification.display.errorCopyClipboard.description": "Controls the display of the error message when copying to the clipboard fails.",
+    "extension.configuration.markdown.enabled.description": "Enable/disable rendering Japanese Novel in the built-in Markdown preview."
 }

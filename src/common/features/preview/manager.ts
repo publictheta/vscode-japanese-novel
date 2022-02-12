@@ -5,7 +5,6 @@ import {
     PREVIEW_VIEW_TYPE,
     PREVIEW_CONFIGURATION,
     PREVIEW_CONFIGURATION_SECTION,
-    PreviewContextKey,
     PREVIEW_CONTEXT_KEY,
 } from "../../base/consts"
 import { Disposable } from "../../base/dispose"
@@ -18,6 +17,7 @@ import {
 import { Preview, PreviewState } from "./preview"
 import { PreviewStore } from "./store"
 import { PreviewExtensionContext } from "./context"
+import { setContext } from "../../base/context"
 
 /**
  * プレビューパネルを管理するクラス
@@ -383,12 +383,6 @@ export class PreviewManager
             )
         }
     }
-}
-
-const SET_CONTEXT = "setContext" as const
-
-function setContext(key: PreviewContextKey, value: unknown) {
-    void vscode.commands.executeCommand(SET_CONTEXT, key, value)
 }
 
 namespace TextEditorInWindow {

@@ -23,6 +23,10 @@ export const COMMAND_FORMAT_WITH_INDENTATION =
 export const COMMAND_FORMAT_WITHOUT_INDENTATION =
     `${EXTENSION_ID}.formatWithoutIndentation` as const
 
+// MARK: Context
+
+export type ContextKey = PreviewContextKey | MarkdownContextKey
+
 // MARK: Preview
 
 export const PREVIEW_VIEW_TYPE = "japanese-novel.preview" as const
@@ -69,6 +73,23 @@ export const ORIENTATION = {
     HORIZONTAL: "horizontal",
     VERTICAL: "vertical",
 } as const
+
+// MARK: Markdown
+
+export const MARKDOWN_NOTEBOOK_RENDERER_ID =
+    "markdownItRenderer-japanese-novel" as const
+
+export type MarkdownContextKey = ConstEnum<typeof MARKDOWN_CONTEXT_KEY>
+export const MARKDOWN_CONTEXT_KEY = {
+    ENABLED: `${EXTENSION_ID}.markdown.enabled`,
+} as const
+
+export const MARKDOWN_CONFIGURATION = "markdown.japanese-novel" as const
+export const MARKDOWN_CONFIGURATION_FIELD = {
+    ENABLED: "enabled",
+} as const
+export const MARKDOWN_CONFIGURATION_ENABLED =
+    `${MARKDOWN_CONFIGURATION}.${MARKDOWN_CONFIGURATION_FIELD.ENABLED}` as const
 
 // MARK: Notification
 

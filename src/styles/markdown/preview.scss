@@ -1,0 +1,15 @@
+em.japanese-novel-dots {
+    font-style: normal;
+
+    span {
+        position: relative;
+    }
+
+    span::before {
+        content: "・";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -62.5%);
+    }
+}

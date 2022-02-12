@@ -198,6 +198,50 @@ async function createTestConfig(target, mode) {
     }
 }
 
+/**
+ * @param { WebpackConfig["entry"] } entry
+ * @param { "production" | "development" } mode
+ * @returns { Promise<WebpackConfig> }
+ */
+async function createStylesConfig(entry, mode) {
+    const isProd = mode === "production"
+    const isDev = !isProd
+
+    return {
+        mode: mode,
+        target: "web",
+        name: "styles",
+        entry: entry,
+        output: {
+            path: path.resolve(__dirname, DIST, "styles"),
+            clean: true,
+        },
+        devtool: isProd ? undefined : "inline-source-map",
+        optimization: isDev ? undefined : createOptimization({ css: true }),
+        module: {
+            rules: [
+                {
+                    test: /\.css$/,
+                    use: [MiniCssExtractPlugin.loader, "css-loader"],
+                },
+                {
+                    test: /\.s[ac]ss$/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        "css-loader",
+                        "sass-loader",
+                    ],
+                },
+            ],
+        },
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: "[name].css",
+            }),
+        ],
+    }
+}
+
 module.exports =
     /**
      * @param {{ test?: boolean }} env
@@ -216,6 +260,12 @@ module.exports =
             createExtensionConfig("webworker", mode),
             createWebViewsConfig(
                 { preview: "./src/webviews/preview/index.ts" },
+                mode
+            ),
+            createStylesConfig(
+                {
+                    "markdown/preview": "./src/styles/markdown/preview.scss",
+                },
                 mode
             ),
         ])

@@ -4,6 +4,7 @@ import { CommandManager } from "./base/command"
 import * as commands from "./commands"
 import { PreviewManager } from "./features/preview"
 import { CharacterCounter, CounterManager } from "./features/counter"
+import { MarkdownItPluginManager } from "./features/markdown"
 
 export function activate(context: vscode.ExtensionContext) {
     const counter = new CharacterCounter()
@@ -12,6 +13,9 @@ export function activate(context: vscode.ExtensionContext) {
 
     const preview = new PreviewManager(context)
     context.subscriptions.push(preview)
+
+    const markdown = new MarkdownItPluginManager()
+    context.subscriptions.push(markdown)
 
     const command = new CommandManager()
     command.register(new commands.InsertRubyCommand())
@@ -24,6 +28,10 @@ export function activate(context: vscode.ExtensionContext) {
     command.register(new commands.FormatWithIndentationCommand())
     command.register(new commands.FormatWithoutIndentationCommand())
     context.subscriptions.push(command)
+
+    return {
+        ...markdown.getMarkdownItPlugin(),
+    }
 }
 
 export function deactivate() {
