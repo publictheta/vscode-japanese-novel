@@ -3,7 +3,7 @@
     "scopeName": "text.japanese-novel",
     "patterns": [
         {
-            "name": "meta.ruby.explicit",
+            "name": "markup.ruby.explicit.japanese-novel",
             "match": "([|｜])([^|｜《》\n\r]+)(《)([^《》\n\r]+)(》)",
             "comment": "ルビ",
             "captures": {
@@ -25,7 +25,7 @@
             }
         },
         {
-            "name": "meta.ruby.kanji",
+            "name": "markup.ruby.implicit.japanese-novel",
             "match": "([\\p{Han}〆ヶ]+)(《)([^《》\n\r]+)(》)",
             "comment": "ルビ（漢字）",
             "captures": {
@@ -44,7 +44,7 @@
             }
         },
         {
-            "name": "meta.emphasis.dot",
+            "name": "markup.emphasis.dot.japanese-novel",
             "match": "(?<=^|[^|｜])(《《)([^\n\r]+?)(》》)",
             "comment": "傍点",
             "captures": {

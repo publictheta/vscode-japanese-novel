@@ -45,7 +45,7 @@
             }
         },
         {
-            "name": "markup.emphasis.dots.markdown.japanese-novel",
+            "name": "markup.emphasis.dot.markdown.japanese-novel",
             "match": "(?<=^|[^|｜])(《《)([^\n\r]+?)(》》)",
             "comment": "傍点",
             "captures": {
