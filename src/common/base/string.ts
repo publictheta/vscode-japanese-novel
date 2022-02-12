@@ -51,7 +51,7 @@ function escapeHTML(string: string): string {
  * `toPlain`で使う正規表現
  */
 const REGEX_TO_PLAIN =
-    /(?:[|｜]([^|｜《》\n\r]+)《[^《》\n\r]+》)|(?:([\p{sc=Han}〆ヶ]+)《[^《》\n\r]+》)|(?:(^|[^|｜])《《([^\n\r]+?)》》)/gmu
+    /(?:[|｜]([^|｜《》\n\r]+)《[^《》\n\r]+》)|(?:([\p{sc=Han}〆ヶ]+)《[^《》\n\r]+》)|(?<=^|[^|｜])《《([^\n\r]+?)》》/gmu
 
 /**
  * 注記を取り除く
@@ -66,7 +66,6 @@ export function toPlain(string: string): string {
             _: string,
             text: string | undefined,
             han_text: string | undefined,
-            prefix: string | undefined,
             content: string | undefined
         ) => {
             if (text === undefined) {
@@ -74,7 +73,7 @@ export function toPlain(string: string): string {
             }
 
             if (text === undefined) {
-                return (prefix || "") + (content || "")
+                return content || ""
             }
 
             return text
@@ -96,7 +95,7 @@ export function splitLines(string: string): string[] {
  * `lineToHTML`で使う正規表現
  */
 const REGEX_LINE_TO_HTML =
-    /(?:[|｜]([^|｜《》\n\r]+)《([^《》\n\r]+)》)|(?:([\p{sc=Han}〆ヶ]+)《([^《》\n\r]+)》)|(?:(^|[^|｜])《《([^\n\r]+?)》》)/gmu
+    /(?:[|｜]([^|｜《》\n\r]+)《([^《》\n\r]+)》)|(?:([\p{sc=Han}〆ヶ]+)《([^《》\n\r]+)》)|(?:(?<=^|[^|｜])《《([^\n\r]+?)》》)/gmu
 
 /**
  * 注記を含む単一行の文字列をHTMLに変換する
@@ -123,7 +122,6 @@ export function lineToHTML(string: string): string {
             ruby: string | undefined,
             han_text: string | undefined,
             han_ruby: string | undefined,
-            prefix: string | undefined,
             content: string | undefined
         ) => {
             if (text === undefined) {
@@ -132,7 +130,7 @@ export function lineToHTML(string: string): string {
             }
 
             if (text === undefined) {
-                return (prefix || "") + "<em>" + spans(content || "") + "</em>"
+                return "<em>" + spans(content || "") + "</em>"
             }
 
             return `<ruby>${text}<rt>${ruby || ""}</rt></ruby>`
@@ -155,7 +153,7 @@ export function linesToHTML(string: string): string {
 /**
  * `toRubyOnly`で使う正規表現
  */
-const REGEX_TO_RUBY_ONLY = /(^|[^|｜])《《([^\n\r]+?)》》/gu
+const REGEX_TO_RUBY_ONLY = /(?<=^|[^|｜])《《([^\n\r]+?)》》/gu
 
 /**
  * ルビ注記のみの文字列に変換する
@@ -176,12 +174,8 @@ export function toRubyOnly(string: string): string {
 
     return string.replace(
         REGEX_TO_RUBY_ONLY,
-        (
-            _: string,
-            prefix: string | undefined,
-            content: string | undefined
-        ) => {
-            return (prefix || "") + dots(content || "")
+        (_: string, content: string | undefined) => {
+            return dots(content || "")
         }
     )
 }
