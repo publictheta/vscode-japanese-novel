@@ -4,6 +4,7 @@ import {
     COMMAND_INSERT_DOTS,
     COMMAND_INSERT_RUBY,
     EXTENSION_LANGUAGE_ID,
+    MARKDOWN_LANGUAGE_ID,
 } from "../base/consts"
 import { TextEditorCommand } from "../base/command"
 import { CHAR_VERTICAL_BAR, REGEX_ALL_HAN, REGEX_SPECIAL } from "../base/string"
@@ -37,9 +38,13 @@ async function executeLineEditWithSelection(
         prefix: string
     ) => number
 ): Promise<void> {
-    if (editor.document.languageId !== EXTENSION_LANGUAGE_ID) {
-        await NotificationService.showErrorMessage("errorInvalidLanguageId")
-        return
+    switch (editor.document.languageId) {
+        case EXTENSION_LANGUAGE_ID:
+        case MARKDOWN_LANGUAGE_ID:
+            break
+        default:
+            await NotificationService.showErrorMessage("errorInvalidLanguageId")
+            return
     }
 
     const selection = editor.selection

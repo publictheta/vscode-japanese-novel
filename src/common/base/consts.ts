@@ -76,6 +76,8 @@ export const ORIENTATION = {
 
 // MARK: Markdown
 
+export const MARKDOWN_LANGUAGE_ID = "markdown" as const
+
 export const MARKDOWN_NOTEBOOK_RENDERER_ID =
     "markdownItRenderer-japanese-novel" as const
 

@@ -46,7 +46,8 @@
         "onCommand:japanese-novel.copyAsRubyOnly",
         "onCommand:japanese-novel.formatWithIndentation",
         "onCommand:japanese-novel.formatWithoutIndentation",
-        "onWebviewPanel:japanese-novel.preview"
+        "onWebviewPanel:japanese-novel.preview",
+        "onLanguage:markdown"
     ],
     "capabilities": {
         "virtualWorkspaces": true,
@@ -193,11 +194,11 @@
                 },
                 {
                     "command": "japanese-novel.insertRuby",
-                    "when": "editorLangId == japanese-novel"
+                    "when": "editorLangId == japanese-novel || editorLangId == markdown && japanese-novel.markdown.enabled"
                 },
                 {
                     "command": "japanese-novel.insertDots",
-                    "when": "editorLangId == japanese-novel"
+                    "when": "editorLangId == japanese-novel || editorLangId == markdown && japanese-novel.markdown.enabled"
                 },
                 {
                     "command": "japanese-novel.copyAsHTML",
@@ -219,12 +220,12 @@
             "editor/context": [
                 {
                     "command": "japanese-novel.insertRuby",
-                    "when": "editorLangId == japanese-novel",
+                    "when": "editorLangId == japanese-novel || editorLangId == markdown && japanese-novel.markdown.enabled",
                     "group": "1_modification@0.1"
                 },
                 {
                     "command": "japanese-novel.insertDots",
-                    "when": "editorLangId == japanese-novel",
+                    "when": "editorLangId == japanese-novel || editorLangId == markdown && japanese-novel.markdown.enabled",
                     "group": "1_modification@0.2"
                 },
                 {
