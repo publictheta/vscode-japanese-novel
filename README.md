@@ -51,7 +51,7 @@ Visual Studio Codeで日本語の小説を書くための拡張機能です。
 ```css
 :root {
    /* 設定で変更されている場合のみ追加されます。 */
-   --preview-font-family; /* 設定された値 */ ;
+   --preview-font-family: /* 設定された値 */ ;
    --preview-font-size:   /* 設定された値 */ ;
    --preview-line-height: /* 設定された値 */ ;
 }
