@@ -18,8 +18,8 @@ body {
     margin: 0;
     padding: 24px;
     place-items: center;
-    font-family: var(--preview-font-family, --vscode-font-family);
-    font-size: var(--preview-font-size, --vscode-font-size);
+    font-family: var(--preview-font-family, var(--vscode-font-family));
+    font-size: var(--preview-font-size, var(--vscode-font-size));
     line-height: var(--preview-line-height, 1.8);
 }
 
