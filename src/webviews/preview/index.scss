@@ -15,7 +15,7 @@ body {
     height: 100%;
     width: 100%;
     margin: 0;
-    padding: 24px;
+    padding: 0;
     font-family: var(--preview-font-family, var(--vscode-font-family));
     font-size: var(--preview-font-size, var(--vscode-font-size));
     line-height: var(--preview-line-height, 1.8);
@@ -50,12 +50,14 @@ em span::before {
 .preview-container {
     display: flex;
     flex-direction: column;
+    padding: 24px;
 }
 
 .preview-horizontal {
     writing-mode: horizontal-tb;
     align-items: center;
     width: 100%;
+    min-height: 100%;
 
     p {
         width: 100%;
@@ -80,6 +82,7 @@ em span::before {
     writing-mode: vertical-rl;
     align-items: center;
     height: 100%;
+    min-width: 100%;
 
     p {
         height: 100%;
