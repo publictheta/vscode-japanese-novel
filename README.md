@@ -30,16 +30,27 @@ Visual Studio Codeで日本語の小説を書くための拡張機能です。
 | 拡張子 | エディターの言語 | ルビと傍点 | プレビュー | 字数カウント | 字下げ揃え |
 | --- | --- | :-: | :-: | :-: | :-: |
 | `.txt` | 小説 (`japanese-novel`) | ✅ | ✅ | ✅ | ✅ |
-| `.md` | Markdown (`markdown`) | ✅ | ✅ | - | - |
+| `.md` | Markdown (`markdown`) | ✅ | 横書きのみ | - | - |
 
 拡張子とエディターの言語の対応づけはVS Codeの設定で変更することが可能です。
 
+## 縦書きプレビュー
+
+テキストファイルのプレビューは設定から縦書きにすることができます。
+
+![縦書き設定画面のスクリーンショット](resources/screenshot-settings-vertical.png)
+
+その際、最大幅を`40rem`のようにフォントサイズと相対的に設定しておくことで、一行の文字数を擬似的に設定することができます。
+
+![最大幅設定画面のスクリーンショット](resources/screenshot-settings-max-width.png)
+
 ## カスタマイズ
 
-プレビューについては設定からフォント、文字サイズ、行の高さを簡単に変更できるほか、カスタムCSSを追加することもできます。
+テキストファイルのプレビューについては設定からフォント、文字サイズ、行の高さ、最大幅を簡単に変更できるほか、カスタムCSSを追加することもできます。
 
 ```html
-<div class="preview-container">
+<!-- 縦書きの場合は`preview-vertical`↓ -->
+<div class="preview-container preview-horizontal">
 <p>　文章。</p>
 <p><ruby>漢字<rt>かんじ</rt></ruby></p>
 <p><em><span>傍</span><span>点</span></em></p>
