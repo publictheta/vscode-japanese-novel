@@ -52,6 +52,7 @@ export const PREVIEW_CONFIGURATION_FIELD = {
     FONT_FAMILY: "style.fontFamily",
     FONT_SIZE: "style.fontSize",
     LINE_HEIGHT: "style.lineHeight",
+    MAX_WIDTH: "style.maxWidth",
     CUSTOM_CSS: "style.custom.css",
     CUSTOM_SHEETS: "style.custom.sheets",
     CUSTOM_INCLUDE_DEFAULT: "style.custom.includeDefault",
@@ -67,6 +68,8 @@ export const PREVIEW_CSS_PROPERTY_NAME_FONT_SIZE =
     "--preview-font-size" as const
 export const PREVIEW_CSS_PROPERTY_NAME_LINE_HEIGHT =
     "--preview-line-height" as const
+export const PREVIEW_CSS_PROPERTY_NAME_MAX_WIDTH =
+    "--preview-max-width" as const
 
 export type Orientation = ConstEnum<typeof ORIENTATION>
 export const ORIENTATION = {

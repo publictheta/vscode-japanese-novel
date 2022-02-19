@@ -54,6 +54,7 @@ Visual Studio Codeで日本語の小説を書くための拡張機能です。
    --preview-font-family: /* 設定された値 */ ;
    --preview-font-size:   /* 設定された値 */ ;
    --preview-line-height: /* 設定された値 */ ;
+   --preview-max-width: /* 設定された値 */ ;
 }
 ```
 

@@ -6,6 +6,7 @@ import {
     PREVIEW_CSS_PROPERTY_NAME_FONT_FAMILY,
     PREVIEW_CSS_PROPERTY_NAME_FONT_SIZE,
     PREVIEW_CSS_PROPERTY_NAME_LINE_HEIGHT,
+    PREVIEW_CSS_PROPERTY_NAME_MAX_WIDTH,
     PREVIEW_VIEW_TYPE,
     PREVIEW_WEBVIEW_CSS_PATH,
     PREVIEW_WEBVIEW_JS_PATH,
@@ -385,6 +386,7 @@ export class Preview extends Disposable implements vscode.Disposable {
             [PREVIEW_CSS_PROPERTY_NAME_FONT_FAMILY, configuration.fontFamily],
             [PREVIEW_CSS_PROPERTY_NAME_FONT_SIZE, configuration.fontSize],
             [PREVIEW_CSS_PROPERTY_NAME_LINE_HEIGHT, configuration.lineHeight],
+            [PREVIEW_CSS_PROPERTY_NAME_MAX_WIDTH, configuration.maxWidth],
         ]) {
             if (value) {
                 rules.push(`${name}: ${value}`)

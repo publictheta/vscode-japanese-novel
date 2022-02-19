@@ -19,6 +19,8 @@
     "extension.configuration.preview.style.fontSize.description": "プレビューで使われるフォントサイズを制御します。デフォルトのフォントサイズを使うには空に設定してください。",
     "extension.configuration.preview.style.fontSize.patternErrorMessage": "フォントサイズとして無効な値です。「14px」「100%」などをお試しください。",
     "extension.configuration.preview.style.lineHeight.description": "プレビューで使われる行の高さを制御します。値にはフォントサイズの何倍かを指定してください。デフォルトの行の高さを使うには0に設定してください。",
+    "extension.configuration.preview.style.maxWidth.description": "プレビューで使われる最大幅を制御します。デフォルトの最大幅を使うには空に設定してください。",
+    "extension.configuration.preview.style.maxWidth.patternErrorMessage": "最大幅として無効な値です。「20rem」「100%」などをお試しください。",
     "extension.configuration.preview.style.custom.css.description": "プレビューで使われるカスタムスタイルのCSSです。無視するには空に設定してください。",
     "extension.configuration.preview.style.custom.sheets.description": "プレビューで使われるカスタムスタイルシートへのURLまたはローカルパスのリストです。相対ローカルパスはエクスプローラーで開かれているフォルダーと相対的に解釈されます。フォルダーが開かれていない場合は、テキストファイルと相対的に解釈されます。'\\'はすべての'\\\\'と書かれる必要があります。",
     "extension.configuration.preview.style.custom.includeDefault.description": "カスタムスタイルがプレビューで使われる際に、デフォルトのスタイルシートをその中に含めるかどうかを制御します。",

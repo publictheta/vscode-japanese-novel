@@ -12,10 +12,12 @@ html {
 }
 
 body {
+    display: grid;
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 24px;
+    place-items: center;
     font-family: var(--preview-font-family, --vscode-font-family);
     font-size: var(--preview-font-size, --vscode-font-size);
     line-height: var(--preview-line-height, 1.8);
@@ -50,6 +52,10 @@ em span::before {
 .preview-horizontal {
     writing-mode: horizontal-tb;
 
+    p {
+        max-width: var(--preview-max-width, 100%);
+    }
+
     p.preview-selected::before {
         top: 0;
         left: -12px;
@@ -66,6 +72,10 @@ em span::before {
 
 .preview-vertical {
     writing-mode: vertical-rl;
+
+    p {
+        max-height: var(--preview-max-width, 100%);
+    }
 
     p.preview-selected::before {
         top: -12px;

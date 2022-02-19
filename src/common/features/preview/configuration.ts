@@ -61,6 +61,7 @@ export class PreviewStyleConfiguration {
     readonly fontFamily: string
     readonly fontSize: string
     readonly lineHeight: number
+    readonly maxWidth: string
     readonly customStyleCSS: string
     readonly customStyleSheets: string[]
     readonly customStyleIncludeDefault: boolean
@@ -76,6 +77,9 @@ export class PreviewStyleConfiguration {
             PREVIEW_CONFIGURATION_FIELD.LINE_HEIGHT,
             0
         )
+        this.maxWidth = configuration
+            .get<string>(PREVIEW_CONFIGURATION_FIELD.MAX_WIDTH, "")
+            .trim()
         this.customStyleCSS = configuration
             .get<string>(PREVIEW_CONFIGURATION_FIELD.CUSTOM_CSS, "")
             .trim()

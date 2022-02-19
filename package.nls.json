@@ -19,6 +19,8 @@
     "extension.configuration.preview.style.fontSize.description": "Controls the font size used in the preview. Set to empty to use the default font size.",
     "extension.configuration.preview.style.fontSize.patternErrorMessage": "Invalid value for the font size. Try '14px' or '100%'.",
     "extension.configuration.preview.style.lineHeight.description": "Controls the line height used in the preview. This number is relative to the font size. Set to 0 to use the default line height.",
+    "extension.configuration.preview.style.maxWidth.description": "Controls the max width used in the preview. Set to empty to use the default max width.",
+    "extension.configuration.preview.style.maxWidth.patternErrorMessage": "Invalid value for the max width. Try '20rem' or '100%'.",
     "extension.configuration.preview.style.custom.css.description": "The custom style CSS to use from the preview. Set to empty to ignore.",
     "extension.configuration.preview.style.custom.sheets.description": "A list of URLs or local paths to custon style sheets to use from the preview. Relative paths are interpreted relative to the folder open in the Explorer. If there is no open folder, they are interpreted relative to the location of the Markdown file. All '\\' need to be written as '\\\\'.",
     "extension.configuration.preview.style.custom.includeDefault.description": "Controls whether the default style sheet will be included when custom style is used in the preview.",
