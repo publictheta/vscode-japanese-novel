@@ -31,7 +31,7 @@
         "Markdown"
     ],
     "engines": {
-        "vscode": "^1.63.0"
+        "vscode": "^1.68.0"
     },
     "main": "./dist/node/extension.js",
     "browser": "./dist/browser/extension.js",
