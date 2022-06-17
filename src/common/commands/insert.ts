@@ -1,13 +1,24 @@
 import * as vscode from "vscode"
 
 import {
+    COMMAND_CONFIGURATION_INSERT_RUBY_FIELD,
+    COMMAND_CONFIGURATION_SECTION,
     COMMAND_INSERT_DOTS,
     COMMAND_INSERT_RUBY,
     EXTENSION_LANGUAGE_ID,
     MARKDOWN_LANGUAGE_ID,
+    type VerticalBarInsert,
+    type VerticalBarKind,
+    VERTICAL_BAR_INSERT,
+    VERTICAL_BAR_KIND,
 } from "../base/consts"
 import { TextEditorCommand } from "../base/command"
-import { CHAR_VERTICAL_BAR, REGEX_ALL_HAN, REGEX_SPECIAL } from "../base/string"
+import {
+    CHAR_FULLWIDTH_VERTICAL_BAR,
+    CHAR_HALFIWIDTH_VERTICAL_BAR,
+    REGEX_ALL_HAN,
+    REGEX_SPECIAL,
+} from "../base/string"
 import { NotificationService } from "../services/notification"
 
 /**
@@ -99,14 +110,34 @@ export class InsertRubyCommand extends TextEditorCommand {
         await executeLineEditWithSelection(
             editor,
             (edit, selection, text, prefix) => {
+                const config = vscode.workspace.getConfiguration(
+                    COMMAND_CONFIGURATION_SECTION.INSERT_RUBY
+                )
+
+                const insert = config.get<VerticalBarInsert>(
+                    COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_INSERT,
+                    VERTICAL_BAR_INSERT.DEFAULT
+                )
+
                 if (
+                    insert !== VERTICAL_BAR_INSERT.ALWAYS &&
                     REGEX_ALL_HAN.test(text) &&
                     !REGEX_ALL_HAN.test(prefix.slice(-1))
                 ) {
                     edit.insert(selection.end, "《》")
                     return 1
                 } else {
-                    edit.insert(selection.start, CHAR_VERTICAL_BAR)
+                    const kind = config.get<VerticalBarKind>(
+                        COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_KIND,
+                        VERTICAL_BAR_KIND.FULL
+                    )
+
+                    edit.insert(
+                        selection.start,
+                        kind === VERTICAL_BAR_KIND.HALF
+                            ? CHAR_HALFIWIDTH_VERTICAL_BAR
+                            : CHAR_FULLWIDTH_VERTICAL_BAR
+                    )
                     edit.insert(selection.end, "《》")
                     return 2
                 }

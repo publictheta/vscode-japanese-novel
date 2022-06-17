@@ -305,6 +305,36 @@
             "type": "object",
             "title": "%extension.configuration.title%",
             "properties": {
+                "japanese-novel.commands.insertRuby.verticalBar.insert": {
+                    "order": 100,
+                    "type": "string",
+                    "default": "default",
+                    "enum": [
+                        "default",
+                        "always"
+                    ],
+                    "enumDescriptions": [
+                        "%extension.configuration.commands.insertRuby.verticalBar.insert.enum.default.description%",
+                        "%extension.configuration.commands.insertRuby.verticalBar.insert.enum.always.description%"
+                    ],
+                    "description": "%extension.configuration.commands.insertRuby.verticalBar.insert.description%",
+                    "scope": "resource"
+                },
+                "japanese-novel.commands.insertRuby.verticalBar.kind": {
+                    "order": 100,
+                    "type": "string",
+                    "default": "full",
+                    "enum": [
+                        "full",
+                        "half"
+                    ],
+                    "enumDescriptions": [
+                        "%extension.configuration.commands.insertRuby.verticalBar.kind.enum.full.description%",
+                        "%extension.configuration.commands.insertRuby.verticalBar.kind.enum.half.description%"
+                    ],
+                    "description": "%extension.configuration.commands.insertRuby.verticalBar.kind.description%",
+                    "scope": "resource"
+                },
                 "japanese-novel.preview.layout.orientation": {
                     "order": 200,
                     "type": "string",

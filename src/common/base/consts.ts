@@ -23,6 +23,28 @@ export const COMMAND_FORMAT_WITH_INDENTATION =
 export const COMMAND_FORMAT_WITHOUT_INDENTATION =
     `${EXTENSION_ID}.formatWithoutIndentation` as const
 
+export const COMMAND_CONFIGURATION = `${EXTENSION_ID}.commands` as const
+export const COMMAND_CONFIGURATION_SECTION = {
+    INSERT_RUBY: `${COMMAND_CONFIGURATION}.insertRuby`,
+} as const
+
+export const COMMAND_CONFIGURATION_INSERT_RUBY_FIELD = {
+    VERTICAL_BAR_INSERT: "verticalBar.insert",
+    VERTICAL_BAR_KIND: "verticalBar.kind",
+} as const
+
+export type VerticalBarKind = ConstEnum<typeof VERTICAL_BAR_KIND>
+export const VERTICAL_BAR_KIND = {
+    FULL: "full",
+    HALF: "half",
+} as const
+
+export type VerticalBarInsert = ConstEnum<typeof VERTICAL_BAR_INSERT>
+export const VERTICAL_BAR_INSERT = {
+    DEFAULT: "default",
+    ALWAYS: "always",
+} as const
+
 // MARK: Context
 
 export type ContextKey = PreviewContextKey | MarkdownContextKey
