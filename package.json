@@ -97,7 +97,11 @@
         "configurationDefaults": {
             "[japanese-novel]": {
                 "editor.autoIndent": "none",
-                "editor.quickSuggestions": false,
+                "editor.quickSuggestions": {
+                    "comments": "off",
+                    "other": "off",
+                    "strings": "off"
+                },
                 "editor.unicodeHighlight.ambiguousCharacters": false,
                 "editor.unicodeHighlight.invisibleCharacters": false,
                 "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?｀！＠＃＄％＾＆＊（）ー＿＝＋＼｜；：＜＞、。・？［］｛｝【】〔〕「」『』〈〉〔〕《》…",
