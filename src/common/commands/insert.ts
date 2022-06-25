@@ -156,7 +156,7 @@ export class InsertDotsCommand extends TextEditorCommand {
         await executeLineEditWithSelection(editor, (edit, selection) => {
             edit.insert(selection.start, "《《")
             edit.insert(selection.end, "》》")
-            return 4
+            return selection.start === selection.end ? 2 : 4
         })
     }
 }
