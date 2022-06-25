@@ -43,11 +43,11 @@ export const REGEX_SPACE_AT_LINE_START = /^([\p{Zs}]+)/mu
 function escapeHTML(string: string): string {
     return string.replace(/[&<>"']/g, (match: string) => {
         return {
-            "&": "&amp",
-            "<": "&lt",
-            ">": "&gt",
-            '"': "&quot",
-            "'": "&#39",
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&apos;",
         }[match] as string
     })
 }
