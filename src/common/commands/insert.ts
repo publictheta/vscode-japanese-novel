@@ -114,33 +114,90 @@ export class InsertRubyCommand extends TextEditorCommand {
                     COMMAND_CONFIGURATION_SECTION.INSERT_RUBY
                 )
 
-                const insert = config.get<VerticalBarInsert>(
-                    COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_INSERT,
-                    VERTICAL_BAR_INSERT.DEFAULT
-                )
-
-                if (
-                    insert !== VERTICAL_BAR_INSERT.ALWAYS &&
-                    REGEX_ALL_HAN.test(text) &&
-                    !REGEX_ALL_HAN.test(prefix.slice(-1))
-                ) {
-                    edit.insert(selection.end, "《》")
-                    return 1
-                } else {
-                    const kind = config.get<VerticalBarKind>(
+                function getBar() {
+                    const barKind = config.get<VerticalBarKind>(
                         COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_KIND,
                         VERTICAL_BAR_KIND.FULL
                     )
 
-                    edit.insert(
-                        selection.start,
-                        kind === VERTICAL_BAR_KIND.HALF
-                            ? CHAR_HALFWIDTH_VERTICAL_BAR
-                            : CHAR_FULLWIDTH_VERTICAL_BAR
-                    )
-                    edit.insert(selection.end, "《》")
-                    return 2
+                    return barKind === VERTICAL_BAR_KIND.HALF
+                        ? CHAR_HALFWIDTH_VERTICAL_BAR
+                        : CHAR_FULLWIDTH_VERTICAL_BAR
                 }
+
+                function getInsertAlways() {
+                    return (
+                        config.get<VerticalBarInsert>(
+                            COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_INSERT,
+                            VERTICAL_BAR_INSERT.DEFAULT
+                        ) === VERTICAL_BAR_INSERT.ALWAYS
+                    )
+                }
+
+                // # 実装
+                //
+                // - 状態: テキストが未選択か選択済か
+                // - 状態: （未選択なら）直前が漢字か漢字以外か
+                // - 状態: （選択済なら）選択中のテキストが漢字のみか
+                // - 設定: 縦棒の挿入が常時か必要時のみか
+                //
+                // から、
+                //
+                // - 縦棒を挿入するか
+                // - カーソル位置をどれだけ動かすか
+                //
+                // を決める。
+                //
+                // 分岐をすべて書き出すと次のようになる。
+                //
+                // - 未選択:
+                //     - 直前漢字 -> 縦棒なしで括弧の中へ
+                //         - delta = 1
+                //     - それ以外:
+                //         - 常時 -> 縦棒ありで括弧の前へ
+                //             - insert(bar)
+                //             - delta = 1
+                //         - 必要時 -> 縦棒なしで括弧の中へ
+                //             - delta = 1
+                // - 選択済:
+                //     - 常時 -> 縦棒ありで括弧の中へ
+                //         - insert(bar)
+                //         - delta = 2
+                //     - 必要時:
+                //         - 選択漢字のみ -> 縦棒なしで括弧の中へ
+                //             - delta = 1
+                //         - それ以外含む -> 縦棒ありで括弧の中へ
+                //             - insert(bar)
+                //             - delta = 2
+                //
+                // これを整理すると次のようなコードになる。
+
+                let delta = 1
+                let insertBar = false
+
+                if (selection.isEmpty) {
+                    if (
+                        !(
+                            prefix.length > 0 &&
+                            REGEX_ALL_HAN.test(prefix.slice(-1))
+                        ) &&
+                        getInsertAlways()
+                    ) {
+                        insertBar = true
+                    }
+                } else {
+                    if (!REGEX_ALL_HAN.test(text) || getInsertAlways()) {
+                        insertBar = true
+                        delta += 1
+                    }
+                }
+
+                if (insertBar) {
+                    edit.insert(selection.start, getBar())
+                }
+
+                edit.insert(selection.end, "《》")
+                return delta
             }
         )
     }
