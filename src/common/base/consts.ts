@@ -43,6 +43,7 @@ export type VerticalBarInsert = ConstEnum<typeof VERTICAL_BAR_INSERT>
 export const VERTICAL_BAR_INSERT = {
     DEFAULT: "default",
     ALWAYS: "always",
+    ONLY_WHEN_NEEDED: "onlyWhenNeeded",
 } as const
 
 // MARK: Context

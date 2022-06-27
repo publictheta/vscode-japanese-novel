@@ -315,11 +315,13 @@
                     "default": "default",
                     "enum": [
                         "default",
-                        "always"
+                        "always",
+                        "onlyWhenNeeded"
                     ],
                     "enumDescriptions": [
                         "%extension.configuration.commands.insertRuby.verticalBar.insert.enum.default.description%",
-                        "%extension.configuration.commands.insertRuby.verticalBar.insert.enum.always.description%"
+                        "%extension.configuration.commands.insertRuby.verticalBar.insert.enum.always.description%",
+                        "%extension.configuration.commands.insertRuby.verticalBar.insert.enum.onlyWhenNeeded.description%"
                     ],
                     "description": "%extension.configuration.commands.insertRuby.verticalBar.insert.description%",
                     "scope": "resource"

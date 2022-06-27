@@ -130,7 +130,7 @@ export class InsertRubyCommand extends TextEditorCommand {
                         config.get<VerticalBarInsert>(
                             COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_INSERT,
                             VERTICAL_BAR_INSERT.DEFAULT
-                        ) === VERTICAL_BAR_INSERT.ALWAYS
+                        ) !== VERTICAL_BAR_INSERT.ONLY_WHEN_NEEDED
                     )
                 }
 
