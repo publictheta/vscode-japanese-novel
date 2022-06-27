@@ -6,7 +6,7 @@ export const CHAR_FULLWIDTH_VERTICAL_BAR = "｜" as const
 /**
  * 半角縦棒
  */
-export const CHAR_HALFIWIDTH_VERTICAL_BAR = "|" as const
+export const CHAR_HALFWIDTH_VERTICAL_BAR = "|" as const
 
 /**
  * 全角スペース

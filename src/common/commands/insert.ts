@@ -15,7 +15,7 @@ import {
 import { TextEditorCommand } from "../base/command"
 import {
     CHAR_FULLWIDTH_VERTICAL_BAR,
-    CHAR_HALFIWIDTH_VERTICAL_BAR,
+    CHAR_HALFWIDTH_VERTICAL_BAR,
     REGEX_ALL_HAN,
     REGEX_SPECIAL,
 } from "../base/string"
@@ -135,7 +135,7 @@ export class InsertRubyCommand extends TextEditorCommand {
                     edit.insert(
                         selection.start,
                         kind === VERTICAL_BAR_KIND.HALF
-                            ? CHAR_HALFIWIDTH_VERTICAL_BAR
+                            ? CHAR_HALFWIDTH_VERTICAL_BAR
                             : CHAR_FULLWIDTH_VERTICAL_BAR
                     )
                     edit.insert(selection.end, "《》")
