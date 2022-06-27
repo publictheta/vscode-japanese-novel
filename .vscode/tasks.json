@@ -11,6 +11,7 @@
             "problemMatcher": "$ts-webpack"
         },
         {
+            "label": "npm start",
             "type": "npm",
             "script": "start",
             "group": "build",
