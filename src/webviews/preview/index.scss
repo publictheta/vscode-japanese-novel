@@ -40,6 +40,7 @@ em {
 
 em span {
     position: relative;
+    white-space: nowrap;
 }
 
 em span::before {

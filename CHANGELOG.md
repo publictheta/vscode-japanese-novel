@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- fix: 傍点の位置が改行によりズレる問題を修正（#3）
 - update: README.mdの説明を拡充
 - refactor: 内部の全面的なリファクタリング
 

@@ -3,6 +3,7 @@ em.japanese-novel-dots {
 
     span {
         position: relative;
+        white-space: nowrap;
     }
 
     span::before {
