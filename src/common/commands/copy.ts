@@ -1,13 +1,16 @@
 import * as vscode from "vscode"
 
-import {
-    COMMAND_COPY_AS_HTML,
-    COMMAND_COPY_AS_RUBY_ONLY,
-    EXTENSION_LANGUAGE_ID,
-} from "../base/consts"
+import { EXTENSION_ID, EXTENSION_LANGUAGE_ID } from "../const"
 import { UriCommand } from "../base/command"
 import { linesToHTML, toRubyOnly } from "../base/string"
-import { NotificationService } from "../services/notification"
+import {
+    ErrorNotificationId,
+    InfoNotificationId,
+    NotificationService,
+} from "../services/notification"
+
+export const COMMAND_COPY_AS_HTML = `${EXTENSION_ID}.copyAsHTML`
+export const COMMAND_COPY_AS_RUBY_ONLY = `${EXTENSION_ID}.copyAsRubyOnly`
 
 /**
  * テキストをクリップボードへとコピーするコマンド
@@ -21,7 +24,9 @@ export abstract class CopyCommand extends UriCommand {
         const document = await vscode.workspace.openTextDocument(uri)
 
         if (document.languageId !== EXTENSION_LANGUAGE_ID) {
-            await NotificationService.showErrorMessage("errorInvalidLanguageId")
+            await NotificationService.showErrorMessage(
+                ErrorNotificationId.InvalidLanguageId,
+            )
             return
         }
 
@@ -30,7 +35,9 @@ export abstract class CopyCommand extends UriCommand {
         await vscode.env.clipboard.writeText(text)
 
         if (text !== (await vscode.env.clipboard.readText())) {
-            await NotificationService.showErrorMessage("errorCopyClipboard")
+            await NotificationService.showErrorMessage(
+                ErrorNotificationId.CopyClipboard,
+            )
             return
         }
 
@@ -52,7 +59,9 @@ export class CopyAsRubyOnlyCommand extends CopyCommand {
     }
 
     async done(): Promise<void> {
-        await NotificationService.showInformationMessage("infoCopyAsRubyOnly")
+        await NotificationService.showInformationMessage(
+            InfoNotificationId.CopyAsRubyOnly,
+        )
     }
 }
 
@@ -67,6 +76,8 @@ export class CopyAsHTMLCommand extends CopyCommand {
     }
 
     async done(): Promise<void> {
-        await NotificationService.showInformationMessage("infoCopyAsHTML")
+        await NotificationService.showInformationMessage(
+            InfoNotificationId.CopyAsHTML,
+        )
     }
 }

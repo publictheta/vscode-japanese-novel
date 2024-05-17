@@ -1,7 +1,7 @@
-import { Orientation } from "../../../base/consts"
+import { PreviewStyle } from ".."
 import { Patch } from "../../../base/merge"
 import { TextRange, TextSelection } from "../../../base/position"
-import { PreviewStyle } from "../../../features/preview"
+import { Orientation } from "../const"
 
 /**
  * 拡張機能からWebviewへと送られるメッセージ
@@ -15,13 +15,13 @@ export type ExtensionMessage =
     | SelectionChangeMessage
     | VisibleRangesChangeMessage
 
-export const URI_CHANGE_MESSAGE = "uriChange" as const
-export const ORIENTATION_CHANGE_MESSAGE = "orientationChange" as const
-export const STYLE_CHANGE_MESSAGE = "styleChange" as const
-export const RELOAD_MESSAGE = "reload" as const
-export const PATCH_MESSAGE = "patch" as const
-export const SELECTION_CHANGE_MESSAGE = "selectionChange" as const
-export const VISIBLE_RANGES_CHANGE_MESSAGE = "visibleRangesChange" as const
+export const URI_CHANGE_MESSAGE = "uriChange"
+export const ORIENTATION_CHANGE_MESSAGE = "orientationChange"
+export const STYLE_CHANGE_MESSAGE = "styleChange"
+export const RELOAD_MESSAGE = "reload"
+export const PATCH_MESSAGE = "patch"
+export const SELECTION_CHANGE_MESSAGE = "selectionChange"
+export const VISIBLE_RANGES_CHANGE_MESSAGE = "visibleRangesChange"
 
 /**
  * URIの変更を伝えるメッセージ
@@ -88,7 +88,7 @@ export namespace StyleChangeMessage {
      */
     export function create(
         styles: string[],
-        sheets: string[]
+        sheets: string[],
     ): StyleChangeMessage {
         return {
             kind: STYLE_CHANGE_MESSAGE,
@@ -119,7 +119,7 @@ export type ReloadMessage = {
 
 export namespace ReloadMessage {
     /**
-     * `RelaodMessage`を作成する
+     * `ReloadMessage`を作成する
      *
      * @param lines
      * @returns メッセージ
@@ -132,7 +132,7 @@ export namespace ReloadMessage {
         configuration: {
             orientation: Orientation
             style: PreviewStyle
-        }
+        },
     ): ReloadMessage {
         return {
             kind: RELOAD_MESSAGE,
@@ -179,7 +179,7 @@ export namespace SelectionChangeMessage {
      * @returns メッセージ
      */
     export function create(
-        selection: TextSelection | undefined
+        selection: TextSelection | undefined,
     ): SelectionChangeMessage {
         return {
             kind: SELECTION_CHANGE_MESSAGE,
@@ -205,7 +205,7 @@ export namespace VisibleRangesChangeMessage {
      * @returns メッセージ
      */
     export function create(
-        visibleRanges: TextRange[]
+        visibleRanges: TextRange[],
     ): VisibleRangesChangeMessage {
         return {
             kind: VISIBLE_RANGES_CHANGE_MESSAGE,

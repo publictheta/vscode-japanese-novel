@@ -1,20 +1,18 @@
 import type * as MarkdownIt from "markdown-it"
 import type StateInline from "markdown-it/lib/rules_inline/state_inline"
 import type Token from "markdown-it/lib/token"
-import type { ConstEnum } from "../../../base/consts"
 
-type TagName = ConstEnum<typeof TAG_NAME>
-const TAG_NAME = {
-    RUBY: "ruby",
-    RT: "rt",
-    EM: "em",
-    SPAN: "span",
-} as const
+const enum TagName {
+    Ruby = "ruby",
+    Rt = "rt",
+    Em = "em",
+    Span = "span",
+}
 
 const SKIP = Symbol()
 
 const REGEX_TOKENIZE =
-    /(?:[|｜]([^|｜《》\n\r]+)《([^《》\n\r]+)》)|(?:([\p{sc=Han}〆ヶ]+)《([^《》\n\r]+)》)|(?:(?<=^|[^|｜])《《([^\n\r]+?)》》)/u
+    /(?:[|｜]([^|｜《》\n\r`*_[\]()]+)《([^《》\n\r`*_[\]()]+)》)|(?:([\p{sc=Han}〆ヶ]+)《([^《》\n\r`*_[\]()]+)》)|(?:(?<=^|[^|｜])《《([^\n\r`*_[\]()]+?)》》)/u
 
 function tokenize(state: StateInline) {
     if ((state.env as { [SKIP]?: boolean })[SKIP]) {
@@ -33,7 +31,7 @@ function tokenize(state: StateInline) {
         input.slice(0, match.index),
         state.md,
         { ...state.env, [SKIP]: true },
-        out
+        out,
     )
     state.tokens.push(...out)
     state.pos += match.index + match[0].length
@@ -57,22 +55,22 @@ function tokenize(state: StateInline) {
     return true
 
     function pushRuby(text: string, ruby: string) {
-        pushOpen(state, TAG_NAME.RUBY)
+        pushOpen(state, TagName.Ruby)
         pushText(state, text)
-        pushOpen(state, TAG_NAME.RT)
+        pushOpen(state, TagName.Rt)
         pushText(state, ruby)
-        pushClose(state, TAG_NAME.RT)
-        pushClose(state, TAG_NAME.RUBY)
+        pushClose(state, TagName.Rt)
+        pushClose(state, TagName.Ruby)
     }
 
     function pushDots(text: string) {
-        pushOpen(state, TAG_NAME.EM).attrSet("class", "japanese-novel-dots")
+        pushOpen(state, TagName.Em).attrSet("class", "japanese-novel-dots")
         for (const char of text) {
-            pushOpen(state, TAG_NAME.SPAN)
+            pushOpen(state, TagName.Span)
             pushText(state, char)
-            pushClose(state, TAG_NAME.SPAN)
+            pushClose(state, TagName.Span)
         }
-        pushClose(state, TAG_NAME.EM)
+        pushClose(state, TagName.Em)
     }
 
     function pushOpen(state: StateInline, tagName: TagName): Token {

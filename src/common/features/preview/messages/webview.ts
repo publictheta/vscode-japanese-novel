@@ -5,8 +5,8 @@ import { TextRange } from "../../../base/position"
  */
 export type WebviewMessage = RequestReloadMessage | RequestRevealEditorMessage
 
-export const REQUEST_RELOAD_MESSAGE = "requestReload" as const
-export const REQUEST_REVEAL_EDITOR_MESSAGE = "requestRevealEditor" as const
+export const REQUEST_RELOAD_MESSAGE = "requestReload"
+export const REQUEST_REVEAL_EDITOR_MESSAGE = "requestRevealEditor"
 
 /**
  * リロードをリクエストするメッセージ

@@ -1,10 +1,17 @@
 import * as vscode from "vscode"
 
-import { EXTENSION_LANGUAGE_ID } from "../../base/consts"
+import { EXTENSION_LANGUAGE_ID } from "../../const"
 import { Disposable } from "../../base/dispose"
 import { merge, Patch } from "../../base/merge"
 import { toPlain } from "../../base/string"
-import { getLocalization } from "../../i18n"
+
+function formatCount(count: number): string {
+    if (count > 1) {
+        return vscode.l10n.t("{0} chars", count)
+    }
+
+    return vscode.l10n.t("{0} char", count)
+}
 
 export interface Counter {
     count(text: string): number
@@ -37,7 +44,7 @@ export class CounterState implements vscode.Disposable {
 
     static create(
         counter: Counter,
-        document: vscode.TextDocument
+        document: vscode.TextDocument,
     ): CounterState {
         let count = 0
 
@@ -62,7 +69,7 @@ export class CounterState implements vscode.Disposable {
             const line = this.lines[range.start.line]
             const text = line.text.slice(
                 range.start.character,
-                range.end.character
+                range.end.character,
             )
             return counter.count(text)
         }
@@ -70,7 +77,7 @@ export class CounterState implements vscode.Disposable {
         let count = 0
 
         count += counter.count(
-            this.lines[range.start.line].text.slice(range.start.character)
+            this.lines[range.start.line].text.slice(range.start.character),
         )
 
         for (let i = range.start.line + 1, end = range.end.line; i < end; i++) {
@@ -78,7 +85,7 @@ export class CounterState implements vscode.Disposable {
         }
 
         count += counter.count(
-            this.lines[range.end.line].text.slice(0, range.end.character)
+            this.lines[range.end.line].text.slice(0, range.end.character),
         )
 
         return count
@@ -155,7 +162,7 @@ export class CounterManager extends Disposable implements vscode.Disposable {
                 }
 
                 this.showSelection(event.textEditor.document, event.selections)
-            })
+            }),
         )
 
         this.toggle(vscode.window.activeTextEditor)
@@ -178,7 +185,7 @@ export class CounterManager extends Disposable implements vscode.Disposable {
 
         item = vscode.window.createStatusBarItem(
             vscode.StatusBarAlignment.Right,
-            0
+            0,
         )
         this.statusBarItem = item
         return item
@@ -209,13 +216,13 @@ export class CounterManager extends Disposable implements vscode.Disposable {
         const count = state.current()
         const item = this.getOrCreateItem()
 
-        item.text = getLocalization().COUNTER_FORMAT(count)
+        item.text = formatCount(count)
         item.show()
     }
 
     showSelection(
         document: vscode.TextDocument,
-        selections: readonly vscode.Selection[]
+        selections: readonly vscode.Selection[],
     ): void {
         if (selections.length <= 0) {
             this.showDocument(document)
@@ -233,7 +240,7 @@ export class CounterManager extends Disposable implements vscode.Disposable {
         const count = state.currentInRange(this.counter, selection)
         const item = this.getOrCreateItem()
 
-        item.text = getLocalization().COUNTER_FORMAT(count)
+        item.text = formatCount(count)
         item.show()
     }
 

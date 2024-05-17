@@ -1,23 +1,23 @@
 import * as vscode from "vscode"
 
-import {
-    EXTENSION_LANGUAGE_ID,
-    PREVIEW_VIEW_TYPE,
-    PREVIEW_CONFIGURATION,
-    PREVIEW_CONFIGURATION_SECTION,
-    PREVIEW_CONTEXT_KEY,
-} from "../../base/consts"
+import { EXTENSION_LANGUAGE_ID } from "../../const"
 import { Disposable } from "../../base/dispose"
-import { NotificationService } from "../../services/notification"
 import {
+    ErrorNotificationId,
+    NotificationService,
+} from "../../services/notification"
+import {
+    PREVIEW_CONFIGURATION,
+    PreviewConfigurationSection,
     PreviewConfiguration,
     PreviewLayoutConfiguration,
     PreviewStyleConfiguration,
 } from "./configuration"
-import { Preview, PreviewState } from "./preview"
+import { Preview } from "./preview"
 import { PreviewStore } from "./store"
 import { PreviewExtensionContext } from "./context"
-import { setContext } from "../../base/context"
+import { PreviewContextKey, setContext } from "../../base/context"
+import { PREVIEW_VIEW_TYPE, PreviewState } from "./const"
 
 /**
  * プレビューパネルを管理するクラス
@@ -46,16 +46,16 @@ export class PreviewManager
         this.activeEditor = vscode.window.activeTextEditor
         this.visibleEditors = new Set(vscode.window.visibleTextEditors)
 
-        setContext(PREVIEW_CONTEXT_KEY.HAS_ACTIVE, false)
-        setContext(PREVIEW_CONTEXT_KEY.ACTIVE_PATH, "")
-        setContext(PREVIEW_CONTEXT_KEY.VISIBLE_PATHS, [])
+        setContext(PreviewContextKey.HasActive, false)
+        setContext(PreviewContextKey.ActivePath, "")
+        setContext(PreviewContextKey.VisiblePaths, [])
 
         this.subscriptions.push(
             this.store,
             // Webviewパネルの復元を可能にする
             vscode.window.registerWebviewPanelSerializer(
                 PREVIEW_VIEW_TYPE,
-                this
+                this,
             ),
             // 設定の変更をプレビューに伝える
             vscode.workspace.onDidChangeConfiguration(async event => {
@@ -64,12 +64,12 @@ export class PreviewManager
                 }
 
                 const configuration = vscode.workspace.getConfiguration(
-                    PREVIEW_CONFIGURATION
+                    PREVIEW_CONFIGURATION,
                 )
 
                 if (
                     event.affectsConfiguration(
-                        PREVIEW_CONFIGURATION_SECTION.LAYOUT
+                        PreviewConfigurationSection.LAYOUT,
                     )
                 ) {
                     const layout = new PreviewLayoutConfiguration(configuration)
@@ -90,7 +90,7 @@ export class PreviewManager
 
                 if (
                     event.affectsConfiguration(
-                        PREVIEW_CONFIGURATION_SECTION.STYLE
+                        PreviewConfigurationSection.STYLE,
                     )
                 ) {
                     const style = new PreviewStyleConfiguration(configuration)
@@ -139,8 +139,8 @@ export class PreviewManager
                         await preview.updateUri(
                             vscode.Uri.parse(
                                 file.newUri.toString() +
-                                    string.slice(oldString.length)
-                            )
+                                    string.slice(oldString.length),
+                            ),
                         )
                     }
                 }
@@ -250,7 +250,7 @@ export class PreviewManager
                 }
 
                 this.visibleEditors = next
-            })
+            }),
         )
     }
 
@@ -272,7 +272,9 @@ export class PreviewManager
         }
 
         if (document.languageId !== EXTENSION_LANGUAGE_ID) {
-            await NotificationService.showErrorMessage("errorInvalidLanguageId")
+            await NotificationService.showErrorMessage(
+                ErrorNotificationId.InvalidLanguageId,
+            )
             return
         }
 
@@ -285,7 +287,7 @@ export class PreviewManager
                 editor,
                 editor && vscode.window.activeTextEditor === editor
                     ? vscode.ViewColumn.Beside
-                    : vscode.ViewColumn.Active
+                    : vscode.ViewColumn.Active,
             )
             return
         }
@@ -301,7 +303,9 @@ export class PreviewManager
         const document = editor.document
 
         if (document.languageId !== EXTENSION_LANGUAGE_ID) {
-            await NotificationService.showErrorMessage("errorInvalidLanguageId")
+            await NotificationService.showErrorMessage(
+                ErrorNotificationId.InvalidLanguageId,
+            )
             return
         }
 
@@ -324,7 +328,7 @@ export class PreviewManager
     // Webviewパネルの状態を復元する
     async deserializeWebviewPanel(
         panel: vscode.WebviewPanel,
-        state: PreviewState
+        state: PreviewState,
     ): Promise<void> {
         const uri = vscode.Uri.parse(state.uri)
 
@@ -336,7 +340,9 @@ export class PreviewManager
         }
 
         if (document.languageId !== EXTENSION_LANGUAGE_ID) {
-            await NotificationService.showErrorMessage("errorInvalidLanguageId")
+            await NotificationService.showErrorMessage(
+                ErrorNotificationId.InvalidLanguageId,
+            )
             return
         }
 
@@ -350,15 +356,12 @@ export class PreviewManager
 
         if (value) {
             this.activePreview = preview
-            setContext(PREVIEW_CONTEXT_KEY.HAS_ACTIVE, true)
-            setContext(
-                PREVIEW_CONTEXT_KEY.ACTIVE_PATH,
-                preview.document.uri.path
-            )
+            setContext(PreviewContextKey.HasActive, true)
+            setContext(PreviewContextKey.ActivePath, preview.document.uri.path)
         } else if (this.activePreview == preview) {
             this.activePreview = undefined
-            setContext(PREVIEW_CONTEXT_KEY.HAS_ACTIVE, false)
-            setContext(PREVIEW_CONTEXT_KEY.ACTIVE_PATH, "")
+            setContext(PreviewContextKey.HasActive, false)
+            setContext(PreviewContextKey.ActivePath, "")
         }
     }
 
@@ -368,18 +371,18 @@ export class PreviewManager
         if (value) {
             this.visiblePreviews.add(preview)
             setContext(
-                PREVIEW_CONTEXT_KEY.VISIBLE_PATHS,
+                PreviewContextKey.VisiblePaths,
                 Array.from(this.visiblePreviews.values()).map(
-                    preview => preview.document.uri.path
-                )
+                    preview => preview.document.uri.path,
+                ),
             )
         } else {
             this.visiblePreviews.delete(preview)
             setContext(
-                PREVIEW_CONTEXT_KEY.VISIBLE_PATHS,
+                PreviewContextKey.VisiblePaths,
                 Array.from(this.visiblePreviews.values()).map(
-                    preview => preview.document.uri.path
-                )
+                    preview => preview.document.uri.path,
+                ),
             )
         }
     }
@@ -387,7 +390,7 @@ export class PreviewManager
 
 namespace TextEditorInWindow {
     export function find(
-        predicate: (editor: vscode.TextEditor) => boolean
+        predicate: (editor: vscode.TextEditor) => boolean,
     ): vscode.TextEditor | undefined {
         const active = vscode.window.activeTextEditor
 

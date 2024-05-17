@@ -71,12 +71,12 @@ export abstract class TextEditorCommand extends Command {
      */
     abstract executeTextEditor(
         editor: vscode.TextEditor,
-        edit: vscode.TextEditorEdit
+        edit: vscode.TextEditorEdit,
     ): Promise<void>
 
     async execute(
         editor: vscode.TextEditor,
-        edit: vscode.TextEditorEdit
+        edit: vscode.TextEditorEdit,
     ): Promise<void> {
         await this.executeTextEditor(editor, edit)
     }
@@ -106,15 +106,15 @@ export class CommandManager implements vscode.Disposable {
                       command.id,
                       command.execute as (
                           editor: vscode.TextEditor,
-                          edit: vscode.TextEditorEdit
+                          edit: vscode.TextEditorEdit,
                       ) => void,
-                      command
+                      command,
                   )
                 : vscode.commands.registerCommand(
                       command.id,
                       command.execute,
-                      command
-                  )
+                      command,
+                  ),
         )
 
         return command

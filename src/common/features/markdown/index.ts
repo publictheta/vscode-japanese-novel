@@ -1,14 +1,9 @@
 import * as vscode from "vscode"
 import type MarkdownIt from "markdown-it"
 
-import {
-    MARKDOWN_CONFIGURATION_ENABLED,
-    MARKDOWN_CONTEXT_KEY,
-} from "../../base/consts"
 import { Disposable } from "../../base/dispose"
-import { isMarkdownEnabled } from "./configuration"
+import { MarkdownContextKey, setContext } from "../../base/context"
 import MarkdownItJapaneseNovel from "./plugin"
-import { setContext } from "../../base/context"
 
 export interface IMarkdownItPlugin {
     extendMarkdownIt(md: MarkdownIt): MarkdownIt
@@ -23,19 +18,19 @@ export class MarkdownItPluginManager
 
         this.subscriptions.push(
             vscode.workspace.onDidChangeConfiguration(e => {
-                if (!e.affectsConfiguration(MARKDOWN_CONFIGURATION_ENABLED)) {
+                if (!affectsMarkdownEnabled(e)) {
                     return
                 }
 
-                setContext(MARKDOWN_CONTEXT_KEY.ENABLED, isMarkdownEnabled())
+                setContext(MarkdownContextKey.Enabled, isMarkdownEnabled())
 
                 void vscode.commands.executeCommand(
-                    "markdown.api.reloadPlugins"
+                    "markdown.api.reloadPlugins",
                 )
-            })
+            }),
         )
 
-        setContext(MARKDOWN_CONTEXT_KEY.ENABLED, isMarkdownEnabled())
+        setContext(MarkdownContextKey.Enabled, isMarkdownEnabled())
     }
 
     getMarkdownItPlugin(): IMarkdownItPlugin {
@@ -49,4 +44,14 @@ export class MarkdownItPluginManager
             },
         }
     }
+}
+
+function affectsMarkdownEnabled(e: vscode.ConfigurationChangeEvent): boolean {
+    return e.affectsConfiguration("markdown.japanese-novel.enabled")
+}
+
+function isMarkdownEnabled(): boolean {
+    return vscode.workspace
+        .getConfiguration("markdown.japanese-novel")
+        .get<boolean>("enabled", true)
 }

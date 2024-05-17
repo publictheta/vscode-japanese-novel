@@ -1,10 +1,30 @@
 {
-    "extends": [".eslintrc.base.json"],
+    "$schema": "https://json.schemastore.org/eslintrc",
+    "root": true,
     "env": {
-        "browser": true,
+        "es6": true,
         "node": true
     },
+    "plugins": ["import", "@typescript-eslint"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "./tsconfig.json"
+    },
+    "rules": {
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-namespace": "off"
+    },
+    "settings": {
+        "import/core-modules": ["vscode", "vscode-webview"],
+        "import/resolver": "typescript"
     }
 }

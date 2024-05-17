@@ -1,6 +1,0 @@
-{
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "types": ["vscode", "webpack-env", "mocha", "assert"]
-    }
-}

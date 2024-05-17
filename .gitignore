@@ -1,9 +1,7 @@
-.vscode-test
-.vscode-test-web
-package-lock.json
 node_modules
 /dist
 /out
 *.eslintcache*
+*.stylelintcache*
 *.tsbuildinfo
 *.vsix

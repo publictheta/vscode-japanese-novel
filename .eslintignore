@@ -1,6 +1,4 @@
-.vscode-test
-.vscode-test-web
 node_modules
 out
 dist
-webpack.config.js
+.eslintrc.js

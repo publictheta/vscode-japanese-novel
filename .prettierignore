@@ -1,6 +1,5 @@
-.vscode-test
-.vscode-test-web
 node_modules
+pnpm-lock.yaml
 out
 dist
 *.md

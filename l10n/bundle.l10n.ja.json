@@ -1,0 +1,17 @@
+{
+    "{0} chars": "{0} 文字",
+    "{0} char": "{0} 文字",
+    "Preview": "プレビュー",
+    "Preview ({0})": "プレビュー ({0})",
+    "Loading preview...": "プレビューを読み込み中…",
+    "Successfully converted the text file to ruby only and copied it to the clipboard.": "テキストファイルをHTMLに変換してクリップボードにコピーしました。",
+    "Successfully converted the text file to HTML and copied it to the clipboard.": "テキストファイルをルビのみに変換してクリップボードにコピーしました。",
+    "The document language was invalid.": "ドキュメントの言語が不適切でした。",
+    "Cannot apply the edit across lines.": "行をまたいで適用することはできません。",
+    "Cannot apply the edit to the text that contains special characters.": "特殊な文字を含む文字列に適用することはできません。",
+    "Failed to apply the edit.": "編集が適用できませんでした。",
+    "Failed to copy to the clipboard.": "クリップボードへのコピーに失敗しました。",
+    "OK": "OK",
+    "Show in the status bar.": "ステータスバーに表示する",
+    "Don't show again.": "今後表示しない"
+}

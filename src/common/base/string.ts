@@ -1,17 +1,17 @@
 /**
  * 全角縦棒（デフォルト）
  */
-export const CHAR_FULLWIDTH_VERTICAL_BAR = "｜" as const
+export const CHAR_FULLWIDTH_VERTICAL_BAR = "｜"
 
 /**
  * 半角縦棒
  */
-export const CHAR_HALFWIDTH_VERTICAL_BAR = "|" as const
+export const CHAR_HALFWIDTH_VERTICAL_BAR = "|"
 
 /**
  * 全角スペース
  */
-export const CHAR_FULLWIDTH_SPACE = "\u{3000}" as const
+export const CHAR_FULLWIDTH_SPACE = "\u{3000}"
 
 /**
  * 注記用の特殊な記号にマッチする正規表現
@@ -71,7 +71,7 @@ export function toPlain(string: string): string {
             _: string,
             text: string | undefined,
             han_text: string | undefined,
-            content: string | undefined
+            content: string | undefined,
         ) => {
             if (text === undefined) {
                 text = han_text
@@ -82,7 +82,7 @@ export function toPlain(string: string): string {
             }
 
             return text
-        }
+        },
     )
 }
 
@@ -127,7 +127,7 @@ export function lineToHTML(string: string): string {
             ruby: string | undefined,
             han_text: string | undefined,
             han_ruby: string | undefined,
-            content: string | undefined
+            content: string | undefined,
         ) => {
             if (text === undefined) {
                 text = han_text
@@ -139,7 +139,7 @@ export function lineToHTML(string: string): string {
             }
 
             return `<ruby>${text}<rt>${ruby || ""}</rt></ruby>`
-        }
+        },
     )
 }
 
@@ -181,6 +181,6 @@ export function toRubyOnly(string: string): string {
         REGEX_TO_RUBY_ONLY,
         (_: string, content: string | undefined) => {
             return dots(content || "")
-        }
+        },
     )
 }

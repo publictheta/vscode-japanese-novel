@@ -41,7 +41,7 @@ export class PreviewStore extends Disposable implements vscode.Disposable {
     add(
         preview: Preview,
         document: vscode.TextDocument,
-        editor?: vscode.TextEditor
+        editor?: vscode.TextEditor,
     ): void {
         this.previews.add(preview)
         this.mapUriString.set(document.uri.toString(), preview)

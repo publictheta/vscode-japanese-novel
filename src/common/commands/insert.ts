@@ -1,17 +1,10 @@
 import * as vscode from "vscode"
 
 import {
-    COMMAND_CONFIGURATION_INSERT_RUBY_FIELD,
-    COMMAND_CONFIGURATION_SECTION,
-    COMMAND_INSERT_DOTS,
-    COMMAND_INSERT_RUBY,
     EXTENSION_LANGUAGE_ID,
     MARKDOWN_LANGUAGE_ID,
-    type VerticalBarInsert,
-    type VerticalBarKind,
-    VERTICAL_BAR_INSERT,
-    VERTICAL_BAR_KIND,
-} from "../base/consts"
+    EXTENSION_ID,
+} from "../const"
 import { TextEditorCommand } from "../base/command"
 import {
     CHAR_FULLWIDTH_VERTICAL_BAR,
@@ -19,7 +12,31 @@ import {
     REGEX_ALL_HAN,
     REGEX_SPECIAL,
 } from "../base/string"
-import { NotificationService } from "../services/notification"
+import {
+    ErrorNotificationId,
+    NotificationService,
+} from "../services/notification"
+
+export const COMMAND_INSERT_RUBY = `${EXTENSION_ID}.insertRuby`
+export const COMMAND_INSERT_DOTS = `${EXTENSION_ID}.insertDots`
+
+export const enum VerticalBarKind {
+    Full = "full",
+    Half = "half",
+}
+
+export const enum VerticalBarInsert {
+    Default = "default",
+    Always = "always",
+    OnlyWhenNeeded = "onlyWhenNeeded",
+}
+
+export const INSERT_RUBY_CONFIGURATION = `${EXTENSION_ID}.commands.insertRuby`
+
+export const enum InsertRubyConfigurationField {
+    VERTICAL_BAR_INSERT = "verticalBar.insert",
+    VERTICAL_BAR_KIND = "verticalBar.kind",
+}
 
 /**
  * 選択範囲を伴った行内の編集を実行する
@@ -46,15 +63,17 @@ async function executeLineEditWithSelection(
         /**
          * 選択範囲の直前のテキスト
          */
-        prefix: string
-    ) => number
+        prefix: string,
+    ) => number,
 ): Promise<void> {
     switch (editor.document.languageId) {
         case EXTENSION_LANGUAGE_ID:
         case MARKDOWN_LANGUAGE_ID:
             break
         default:
-            await NotificationService.showErrorMessage("errorInvalidLanguageId")
+            await NotificationService.showErrorMessage(
+                ErrorNotificationId.InvalidLanguageId,
+            )
             return
     }
 
@@ -68,12 +87,12 @@ async function executeLineEditWithSelection(
             case "\n":
             case "\r":
                 await NotificationService.showErrorMessage(
-                    "errorEditNotSingleLine"
+                    ErrorNotificationId.EditNotSingleLine,
                 )
                 break
             default:
                 await NotificationService.showErrorMessage(
-                    "errorEditContainSpecialCharacter"
+                    ErrorNotificationId.EditContainSpecialCharacter,
                 )
         }
         return
@@ -82,8 +101,8 @@ async function executeLineEditWithSelection(
     const prefix = editor.document.getText(
         new vscode.Range(
             new vscode.Position(selection.start.line, 0),
-            selection.start
-        )
+            selection.start,
+        ),
     )
 
     let delta = 0
@@ -96,7 +115,9 @@ async function executeLineEditWithSelection(
         const cursor = selection.end.translate(0, delta)
         editor.selection = new vscode.Selection(cursor, cursor)
     } else {
-        await NotificationService.showErrorMessage("errorEditOther")
+        await NotificationService.showErrorMessage(
+            ErrorNotificationId.EditOther,
+        )
     }
 }
 
@@ -110,27 +131,27 @@ export class InsertRubyCommand extends TextEditorCommand {
         await executeLineEditWithSelection(
             editor,
             (edit, selection, text, prefix) => {
-                const config = vscode.workspace.getConfiguration(
-                    COMMAND_CONFIGURATION_SECTION.INSERT_RUBY
+                const configuration = vscode.workspace.getConfiguration(
+                    INSERT_RUBY_CONFIGURATION,
                 )
 
                 function getBar() {
-                    const barKind = config.get<VerticalBarKind>(
-                        COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_KIND,
-                        VERTICAL_BAR_KIND.FULL
+                    const barKind = configuration.get<VerticalBarKind>(
+                        InsertRubyConfigurationField.VERTICAL_BAR_KIND,
+                        VerticalBarKind.Full,
                     )
 
-                    return barKind === VERTICAL_BAR_KIND.HALF
+                    return barKind === VerticalBarKind.Half
                         ? CHAR_HALFWIDTH_VERTICAL_BAR
                         : CHAR_FULLWIDTH_VERTICAL_BAR
                 }
 
                 function getInsertAlways() {
                     return (
-                        config.get<VerticalBarInsert>(
-                            COMMAND_CONFIGURATION_INSERT_RUBY_FIELD.VERTICAL_BAR_INSERT,
-                            VERTICAL_BAR_INSERT.DEFAULT
-                        ) !== VERTICAL_BAR_INSERT.ONLY_WHEN_NEEDED
+                        configuration.get<VerticalBarInsert>(
+                            InsertRubyConfigurationField.VERTICAL_BAR_INSERT,
+                            VerticalBarInsert.Default,
+                        ) !== VerticalBarInsert.OnlyWhenNeeded
                     )
                 }
 
@@ -198,7 +219,7 @@ export class InsertRubyCommand extends TextEditorCommand {
 
                 edit.insert(selection.end, "《》")
                 return delta
-            }
+            },
         )
     }
 }

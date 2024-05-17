@@ -1,12 +1,12 @@
 import * as vscode from "vscode"
 
-import {
-    COMMAND_OPEN_PREVIEW,
-    COMMAND_OPEN_PREVIEW_SOURCE,
-    COMMAND_OPEN_PREVIEW_TO_SIDE,
-} from "../base/consts"
+import { EXTENSION_ID } from "../const"
 import { UriCommand, TextEditorCommand, Command } from "../base/command"
 import { PreviewManager } from "../features/preview"
+
+export const COMMAND_OPEN_PREVIEW = `${EXTENSION_ID}.openPreview`
+export const COMMAND_OPEN_PREVIEW_TO_SIDE = `${EXTENSION_ID}.openPreviewToSide`
+export const COMMAND_OPEN_PREVIEW_SOURCE = `${EXTENSION_ID}.openPreviewSource`
 
 /**
  * プレビューをアクティブなパネルで開くコマンド
@@ -59,7 +59,7 @@ export class OpenPreviewSource extends Command {
         await vscode.window.showTextDocument(
             preview.document,
             preview.editor?.viewColumn,
-            false
+            false,
         )
     }
 }

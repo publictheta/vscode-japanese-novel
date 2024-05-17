@@ -1,0 +1,8 @@
+{
+    "!(.gitignore|.vscode/*)": ["cspell --no-must-find-files --no-progress"],
+    "*.{css,sass,scss}": ["stylelint --allow-empty-input --cache --fix"],
+    "*.{js,jsx,mjs,ts,tsx,mts} !(.eslintrc.js)": [
+        "eslint --max-warnings=0 --cache --fix"
+    ],
+    "*": ["prettier --ignore-unknown --cache --write"]
+}

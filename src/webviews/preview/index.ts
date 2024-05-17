@@ -1,18 +1,18 @@
 import { WebviewApi } from "vscode-webview"
 
-import {
-    Orientation,
-    PREVIEW_CSS_CLASS_NAME_CONTAINER,
-    PREVIEW_CSS_CLASS_NAME_HORIZONTAL,
-    PREVIEW_CSS_CLASS_NAME_SELECTED,
-    PREVIEW_CSS_CLASS_NAME_VERTICAL,
-    ORIENTATION,
-} from "../../common/base/consts"
 import { BiMap } from "../../common/base/collections"
 import { merge } from "../../common/base/merge"
 import { TextRange, TextSelection } from "../../common/base/position"
 import { lineToHTML } from "../../common/base/string"
-import { PreviewState, PreviewStyle } from "../../common/features/preview"
+import {
+    PREVIEW_CSS_CLASS_NAME_CONTAINER,
+    PREVIEW_CSS_CLASS_NAME_SELECTED,
+    Orientation,
+    PREVIEW_CSS_CLASS_NAME_VERTICAL,
+    PREVIEW_CSS_CLASS_NAME_HORIZONTAL,
+    PreviewState,
+    PreviewStyle,
+} from "../../common/features/preview/const"
 import {
     ExtensionMessage,
     OrientationChangeMessage,
@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
     new Preview(
         acquireVsCodeApi(),
         document.body.querySelector(
-            `div.${PREVIEW_CSS_CLASS_NAME_CONTAINER}`
+            `div.${PREVIEW_CSS_CLASS_NAME_CONTAINER}`,
         ) as HTMLDivElement,
-        new DefaultRenderer()
+        new DefaultRenderer(),
     )
 })
 
@@ -143,7 +143,7 @@ class Preview {
     constructor(
         api: WebviewApi<PreviewState>,
         container: HTMLElement,
-        renderer: IRenderer
+        renderer: IRenderer,
     ) {
         this.api = api
         this.container = container
@@ -226,7 +226,7 @@ class Preview {
                         line: i,
                         character: line.text.length,
                     },
-                })
+                }),
             )
             return
         }
@@ -256,7 +256,7 @@ class Preview {
      */
     private handleResize(
         entries: ResizeObserverEntry[],
-        observer: ResizeObserver
+        observer: ResizeObserver,
     ) {
         const container = this.container
 
@@ -323,7 +323,7 @@ class Preview {
     }
 
     /**
-     * `RelaodMessage`を処理する
+     * `ReloadMessage`を処理する
      *
      * @param message
      */
@@ -433,7 +433,7 @@ class Preview {
      * @param message
      */
     private handleVisibleRangesChange(
-        message: VisibleRangesChangeMessage
+        message: VisibleRangesChangeMessage,
     ): void {
         this.updateVisibleRanges(message.visibleRanges)
         this.updateScrollPosition()
@@ -441,7 +441,7 @@ class Preview {
 
     // MARK: 内部処理
 
-    private orientatoin: Orientation | null = null
+    private orientation: Orientation | null = null
 
     /**
      * レイアウト方向を更新する
@@ -449,24 +449,24 @@ class Preview {
      * @param orientation
      */
     private updateOrientation(orientation: Orientation) {
-        if (this.orientatoin === orientation) {
+        if (this.orientation === orientation) {
             return
         }
 
         const container = this.container
 
         switch (orientation) {
-            case ORIENTATION.HORIZONTAL:
+            case Orientation.HORIZONTAL:
                 container.classList.remove(PREVIEW_CSS_CLASS_NAME_VERTICAL)
                 container.classList.add(PREVIEW_CSS_CLASS_NAME_HORIZONTAL)
                 break
-            case ORIENTATION.VERTICAL:
+            case Orientation.VERTICAL:
                 container.classList.remove(PREVIEW_CSS_CLASS_NAME_HORIZONTAL)
                 container.classList.add(PREVIEW_CSS_CLASS_NAME_VERTICAL)
                 break
         }
 
-        this.orientatoin = orientation
+        this.orientation = orientation
     }
 
     private mapStyle = new BiMap<string, HTMLStyleElement>()

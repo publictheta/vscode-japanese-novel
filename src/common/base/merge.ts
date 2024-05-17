@@ -66,7 +66,7 @@ export function merge<T>(
          * @param index 作成される行のインデックス
          */
         remove(oldData: T, oldText: string, index: number): void
-    }
+    },
 ): void {
     if (patches.length === 0) {
         return

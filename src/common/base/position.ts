@@ -35,7 +35,7 @@ export namespace TextPosition {
      */
     export function isBeforeOrEqual(
         self: TextPosition,
-        other: TextPosition
+        other: TextPosition,
     ): boolean {
         return (
             self.line < other.line ||
@@ -65,7 +65,7 @@ export namespace TextPosition {
      */
     export function isAfterOrEqual(
         self: TextPosition,
-        other: TextPosition
+        other: TextPosition,
     ): boolean {
         return (
             self.line > other.line ||
@@ -78,7 +78,7 @@ export namespace TextPosition {
      */
     export function compare(
         self: TextPosition,
-        other: TextPosition
+        other: TextPosition,
     ): -1 | 0 | 1 {
         if (self.line < other.line) {
             return -1

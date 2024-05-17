@@ -2,70 +2,58 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "npm",
-            "script": "build",
+            "type": "shell",
+            "label": "pnpm install",
+            "command": "pnpm install",
+            "problemMatcher": []
+        },
+
+        {
+            "type": "shell",
+            "label": "pnpm run build",
+            "command": "pnpm run build",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": "$ts-webpack"
+            "problemMatcher": ["$ts-webpack", "$tslint-webpack"]
         },
         {
-            "label": "npm start",
-            "type": "npm",
-            "script": "start",
+            "type": "shell",
+            "label": "pnpm run start",
+            "command": "pnpm run start",
             "group": "build",
             "isBackground": true,
-            "problemMatcher": "$ts-webpack-watch"
+            "problemMatcher": ["$ts-webpack-watch", "$tslint-webpack-watch"]
         },
         {
-            "type": "npm",
-            "script": "check",
+            "type": "shell",
+            "label": "pnpm run lint:script",
+            "command": "pnpm run lint:script",
             "group": "test"
         },
         {
-            "type": "npm",
-            "script": "lint",
+            "type": "shell",
+            "label": "pnpm run lint:style",
+            "command": "pnpm run lint:style",
             "group": "test"
         },
         {
-            "type": "npm",
-            "script": "format",
+            "type": "shell",
+            "label": "pnpm run lint:format",
+            "command": "pnpm run lint:format",
             "group": "test"
         },
         {
-            "type": "npm",
-            "script": "precommit",
+            "type": "shell",
+            "label": "pnpm run lint:spell",
+            "command": "pnpm run lint:spell",
             "group": "test"
         },
         {
-            "type": "npm",
-            "script": "test:browser",
-            "group": "test"
-        },
-        {
-            "type": "npm",
-            "script": "test:node",
-            "group": "test"
-        },
-        {
-            "type": "npm",
-            "script": "test",
-            "group": "test"
-        },
-        {
-            "type": "npm",
-            "script": "browser:chromium",
-            "group": "test"
-        },
-        {
-            "type": "npm",
-            "script": "browser:firefox",
-            "group": "test"
-        },
-        {
-            "type": "npm",
-            "script": "browser:webkit",
+            "type": "shell",
+            "label": "pnpm run lint",
+            "command": "pnpm run lint",
             "group": "test"
         }
     ]

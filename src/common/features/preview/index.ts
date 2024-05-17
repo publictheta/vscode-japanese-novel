@@ -1,2 +1,2 @@
-export type { PreviewState, PreviewStyle } from "./preview"
+export type { PreviewState, PreviewStyle } from "./const"
 export { PreviewManager } from "./manager"

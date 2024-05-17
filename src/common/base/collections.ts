@@ -6,10 +6,10 @@
  * @param eq 配列の要素が同値かを比較する関数
  * @returns
  */
-export function eqArray(
+export function equalsArray(
     a: unknown[],
     b: unknown[],
-    eq: (a: unknown, b: unknown) => boolean = (a, b) => a === b
+    eq: (a: unknown, b: unknown) => boolean = (a, b) => a === b,
 ): boolean {
     if (a.length !== b.length) {
         return false
@@ -32,16 +32,16 @@ export function eqArray(
  * @param eq オブジェクトの生の値が同値かを比較する関数
  * @returns
  */
-export function eqRecord<T>(
+export function equalsRecord<T extends object>(
     a: T,
     b: T,
-    eq: (a: unknown, b: unknown) => boolean = (a, b) => a === b
+    eq: (a: unknown, b: unknown) => boolean = (a, b) => a === b,
 ) {
     for (const [name, valueA] of Object.entries(a)) {
         const valueB = b[name as keyof T]
 
         if (Array.isArray(valueA) && Array.isArray(valueB)) {
-            if (!eqArray(valueA, valueB, eq)) {
+            if (!equalsArray(valueA, valueB, eq)) {
                 return false
             }
         } else {

@@ -1,3 +1,22 @@
 {
-    "extends": "./tsconfig.base.json"
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "lib": ["ESNext"],
+        "jsx": "react-jsx",
+        "strict": true,
+        "esModuleInterop": true,
+        "incremental": true,
+        "sourceMap": true,
+        "allowUnreachableCode": false,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "noImplicitOverride": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true
+    }
 }

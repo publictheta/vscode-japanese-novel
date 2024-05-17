@@ -1,28 +1,73 @@
 import * as vscode from "vscode"
+import { EXTENSION_ID } from "../../const"
 
-import {
-    ConstEnum,
-    ErrorNotificationId,
-    InfoNotificationId,
-    NotificationDisplay,
-    NotificationId,
-    NOTIFICATION_DISPLAY,
-    NOTIFICATION_CONFIGURATION_SECTION,
-} from "../../base/consts"
-import { getLocalization } from "../../i18n"
+export const enum InfoNotificationId {
+    CopyAsHTML = "infoCopyAsHTML",
+    CopyAsRubyOnly = "infoCopyAsRubyOnly",
+}
+
+export const enum ErrorNotificationId {
+    InvalidLanguageId = "errorInvalidLanguageId",
+    EditNotSingleLine = "errorEditNotSingleLine",
+    EditContainSpecialCharacter = "errorEditContainSpecialCharacter",
+    EditOther = "errorEditOther",
+    CopyClipboard = "errorCopyClipboard",
+}
+
+export type NotificationId = InfoNotificationId | ErrorNotificationId
+
+export const NOTIFICATION_CONFIGURATION = `${EXTENSION_ID}.notification`
+export const NOTIFICATION_CONFIGURATION_SECTION = {
+    DISPLAY: `${NOTIFICATION_CONFIGURATION}.display`,
+} as const
+
+export const enum NotificationDisplay {
+    Show = "show",
+    StatusBar = "statusBar",
+    None = "none",
+}
 
 /**
  * 通知のレベル
  */
-type NotificationLevel = ConstEnum<typeof NOTIFICATION_LEVEL>
-const NOTIFICATION_LEVEL = {
-    ERROR: "error",
-    INFORMATION: "information",
-} as const
+const enum NotificationLevel {
+    Error = "error",
+    Info = "info",
+}
 
-const OK = "ok" as const
-const SHOW_IN_STATUS_BAR = "showInStatusBar" as const
-const DO_NOT_SHOW_AGAIN = "doNotShowAgain" as const
+/**
+ * 通知の選択項目のID。
+ */
+const enum ItemId {
+    Ok = "ok",
+    ShowInStatusBar = "showInStatusBar",
+    DoNotShowAgain = "doNotShowAgain",
+}
+
+function getMessage(id: NotificationId): string {
+    switch (id) {
+        case InfoNotificationId.CopyAsHTML:
+            return vscode.l10n.t(
+                "Successfully converted the text file to ruby only and copied it to the clipboard.",
+            )
+        case InfoNotificationId.CopyAsRubyOnly:
+            return vscode.l10n.t(
+                "Successfully converted the text file to HTML and copied it to the clipboard.",
+            )
+        case ErrorNotificationId.InvalidLanguageId:
+            return vscode.l10n.t("The document language was invalid.")
+        case ErrorNotificationId.EditNotSingleLine:
+            return vscode.l10n.t("Cannot apply the edit across lines.")
+        case ErrorNotificationId.EditContainSpecialCharacter:
+            return vscode.l10n.t(
+                "Cannot apply the edit to the text that contains special characters.",
+            )
+        case ErrorNotificationId.EditOther:
+            return vscode.l10n.t("Failed to apply the edit.")
+        case ErrorNotificationId.CopyClipboard:
+            return vscode.l10n.t("Failed to copy to the clipboard.")
+    }
+}
 
 /**
  * 通知機能を提供する
@@ -35,7 +80,7 @@ export class NotificationService {
      * @returns エラー
      */
     static createError(id: ErrorNotificationId): Error {
-        return new Error(`${id}: ${getLocalization().NOTIFICATION[id]}`)
+        return new Error(`${id}: ${getMessage(id)}`)
     }
 
     /**
@@ -44,10 +89,7 @@ export class NotificationService {
      * @param id 通知メッセージのID
      */
     static async showInformationMessage(id: InfoNotificationId): Promise<void> {
-        await NotificationService.showMessage(
-            id,
-            NOTIFICATION_LEVEL.INFORMATION
-        )
+        await NotificationService.showMessage(id, NotificationLevel.Info)
     }
 
     /**
@@ -56,7 +98,7 @@ export class NotificationService {
      * @param id 通知メッセージのID
      */
     static async showErrorMessage(id: ErrorNotificationId): Promise<void> {
-        await NotificationService.showMessage(id, NOTIFICATION_LEVEL.ERROR)
+        await NotificationService.showMessage(id, NotificationLevel.Error)
     }
 
     /**
@@ -68,51 +110,50 @@ export class NotificationService {
      */
     private static async showMessage(
         id: NotificationId,
-        level: NotificationLevel
+        level: NotificationLevel,
     ): Promise<void> {
         const configuration = vscode.workspace.getConfiguration(
-            NOTIFICATION_CONFIGURATION_SECTION.DISPLAY
+            NOTIFICATION_CONFIGURATION_SECTION.DISPLAY,
         )
 
         const display = configuration.get<NotificationDisplay>(id)
 
-        if (display === NOTIFICATION_DISPLAY.NONE) {
+        if (display === NotificationDisplay.None) {
             return
         }
 
-        const localization = getLocalization()
-        const message = localization.NOTIFICATION[id]
+        const message = getMessage(id)
 
-        if (display === NOTIFICATION_DISPLAY.STATUS_BAR) {
+        if (display === NotificationDisplay.StatusBar) {
             vscode.window.setStatusBarMessage(message, 3000)
             return
         }
 
         const items = [
             {
-                id: OK,
-                title: localization.NOTIFICATION_OK,
+                id: ItemId.Ok,
+                title: vscode.l10n.t("OK"),
             },
             {
-                id: SHOW_IN_STATUS_BAR,
-                title: localization.NOTIFICATION_SHOW_IN_STATUS_BAR,
+                id: ItemId.ShowInStatusBar,
+                title: vscode.l10n.t("Show in the status bar."),
             },
             {
-                id: DO_NOT_SHOW_AGAIN,
-                title: localization.NOTIFICATION_DO_NOT_SHOW_AGAIN,
+                id: ItemId.DoNotShowAgain,
+                title: vscode.l10n.t("Don't show again."),
             },
         ]
 
         let item = undefined
 
         switch (level) {
-            case NOTIFICATION_LEVEL.INFORMATION:
+            case NotificationLevel.Info:
                 item = await vscode.window.showInformationMessage(
                     message,
-                    ...items
+                    ...items,
                 )
                 break
-            case NOTIFICATION_LEVEL.ERROR:
+            case NotificationLevel.Error:
                 item = await vscode.window.showErrorMessage(message, ...items)
                 break
         }
@@ -122,13 +163,13 @@ export class NotificationService {
         }
 
         switch (item.id) {
-            case OK:
+            case ItemId.Ok:
                 break
-            case SHOW_IN_STATUS_BAR:
-                await configuration.update(id, NOTIFICATION_DISPLAY.STATUS_BAR)
+            case ItemId.ShowInStatusBar:
+                await configuration.update(id, NotificationDisplay.StatusBar)
                 break
-            case DO_NOT_SHOW_AGAIN:
-                await configuration.update(id, NOTIFICATION_DISPLAY.NONE)
+            case ItemId.DoNotShowAgain:
+                await configuration.update(id, NotificationDisplay.None)
                 break
         }
     }

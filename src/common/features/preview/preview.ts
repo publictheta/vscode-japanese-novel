@@ -1,19 +1,7 @@
 import * as vscode from "vscode"
 
-import {
-    Orientation,
-    PREVIEW_CSS_CLASS_NAME_CONTAINER,
-    PREVIEW_CSS_PROPERTY_NAME_FONT_FAMILY,
-    PREVIEW_CSS_PROPERTY_NAME_FONT_SIZE,
-    PREVIEW_CSS_PROPERTY_NAME_LINE_HEIGHT,
-    PREVIEW_CSS_PROPERTY_NAME_MAX_WIDTH,
-    PREVIEW_VIEW_TYPE,
-    PREVIEW_WEBVIEW_CSS_PATH,
-    PREVIEW_WEBVIEW_JS_PATH,
-} from "../../base/consts"
 import { Disposable } from "../../base/dispose"
 import { TextRange, TextSelection } from "../../base/position"
-import { getLocalization } from "../../i18n"
 import { PreviewManager } from "./manager"
 import {
     ExtensionMessage,
@@ -30,27 +18,18 @@ import {
     REQUEST_RELOAD_MESSAGE,
     REQUEST_REVEAL_EDITOR_MESSAGE,
 } from "./messages/webview"
-
-/**
- * プレビューが永続化する状態
- */
-export type PreviewState = {
-    uri: string
-}
-
-/**
- * プレビューのWebviewに挿入するスタイル
- */
-export type PreviewStyle = {
-    /**
-     * CSSのテキスト
-     */
-    styles: string[]
-    /**
-     * CSSのURI
-     */
-    sheets: string[]
-}
+import {
+    Orientation,
+    PREVIEW_CSS_CLASS_NAME_CONTAINER,
+    PREVIEW_CSS_PROPERTY_NAME_FONT_FAMILY,
+    PREVIEW_CSS_PROPERTY_NAME_FONT_SIZE,
+    PREVIEW_CSS_PROPERTY_NAME_LINE_HEIGHT,
+    PREVIEW_CSS_PROPERTY_NAME_MAX_WIDTH,
+    PREVIEW_VIEW_TYPE,
+    PREVIEW_WEBVIEW_CSS_PATH,
+    PREVIEW_WEBVIEW_JS_PATH,
+    PreviewStyle,
+} from "./const"
 
 /**
  * プレビューパネル
@@ -68,7 +47,7 @@ export class Preview extends Disposable implements vscode.Disposable {
         manager: PreviewManager,
         document: vscode.TextDocument,
         editor: vscode.TextEditor | undefined,
-        options: vscode.ViewColumn | vscode.WebviewPanel
+        options: vscode.ViewColumn | vscode.WebviewPanel,
     ): Preview {
         const uri = document.uri
 
@@ -82,7 +61,7 @@ export class Preview extends Disposable implements vscode.Disposable {
                 {
                     enableScripts: true,
                     enableForms: false,
-                }
+                },
             )
         } else {
             panel = options
@@ -91,23 +70,25 @@ export class Preview extends Disposable implements vscode.Disposable {
 
         const preview = new Preview(manager, panel, document, editor)
 
-        const localication = getLocalization()
-
         const src = panel.webview.asWebviewUri(
-            manager.context.getExtensionUri(PREVIEW_WEBVIEW_JS_PATH)
+            manager.context.getExtensionUri(PREVIEW_WEBVIEW_JS_PATH),
         )
+
+        const lang = vscode.env.language
+        const title = vscode.l10n.t("Preview")
+        const message = vscode.l10n.t("Loading preview...")
 
         panel.webview.html =
             `<!DOCTYPE html>` +
-            `<html lang="${localication.LANG}">` +
+            `<html lang="${lang}">` +
             `<head>` +
             `<meta charset="utf-8">` +
             `<meta name="viewport" content="width=device-width,initial-scale=1.0">` +
-            `<title>${localication.PREVIEW_TITLE_PLACEHOLDER}</title>` +
+            `<title>${title}</title>` +
             `<script defer src="${src.toString()}"></script>` +
             `</head>` +
             `<body>` +
-            `<div class="${PREVIEW_CSS_CLASS_NAME_CONTAINER}"><p>${localication.PREVIEW_LOADING_MESSAGE}</p></div>` +
+            `<div class="${PREVIEW_CSS_CLASS_NAME_CONTAINER}"><p>${message}</p></div>` +
             `</body>` +
             `</html>`
 
@@ -118,7 +99,7 @@ export class Preview extends Disposable implements vscode.Disposable {
         manager: PreviewManager,
         panel: vscode.WebviewPanel,
         document: vscode.TextDocument,
-        editor: vscode.TextEditor | undefined
+        editor: vscode.TextEditor | undefined,
     ) {
         super()
 
@@ -141,7 +122,7 @@ export class Preview extends Disposable implements vscode.Disposable {
                             this.revealEditor(message.range)
                             break
                     }
-                }
+                },
             ),
             panel.onDidChangeViewState(event => {
                 if (event.webviewPanel.active !== this.active) {
@@ -154,7 +135,7 @@ export class Preview extends Disposable implements vscode.Disposable {
             }),
             panel.onDidDispose(() => {
                 this.dispose()
-            })
+            }),
         )
 
         manager.store.add(this, document, editor)
@@ -216,9 +197,9 @@ export class Preview extends Disposable implements vscode.Disposable {
                 range.start.line,
                 range.start.character,
                 range.end.line,
-                range.end.character
+                range.end.character,
             ),
-            vscode.TextEditorRevealType.InCenterIfOutsideViewport
+            vscode.TextEditorRevealType.InCenterIfOutsideViewport,
         )
     }
 
@@ -242,14 +223,14 @@ export class Preview extends Disposable implements vscode.Disposable {
                     : {
                           selection: TextSelection.clone(editor.selection),
                           visibleRanges: editor.visibleRanges.map(
-                              TextRange.clone
+                              TextRange.clone,
                           ),
                       },
                 {
                     orientation: this.manager.configuration.layout.orientation,
                     style: this.createStyle(),
-                }
-            )
+                },
+            ),
         )
     }
 
@@ -259,7 +240,7 @@ export class Preview extends Disposable implements vscode.Disposable {
      * @param changes `vscode.TextDocumentChangeEvent`から得られる変更情報
      */
     async updateContent(
-        changes: readonly vscode.TextDocumentContentChangeEvent[]
+        changes: readonly vscode.TextDocumentContentChangeEvent[],
     ) {
         await this.post(
             PatchMessage.create(
@@ -280,8 +261,8 @@ export class Preview extends Disposable implements vscode.Disposable {
                             },
                         },
                     }
-                })
-            )
+                }),
+            ),
         )
     }
 
@@ -320,8 +301,8 @@ export class Preview extends Disposable implements vscode.Disposable {
     async updateSelection(selection: vscode.Selection | undefined) {
         await this.post(
             SelectionChangeMessage.create(
-                selection ? TextSelection.clone(selection) : undefined
-            )
+                selection ? TextSelection.clone(selection) : undefined,
+            ),
         )
     }
 
@@ -341,8 +322,8 @@ export class Preview extends Disposable implements vscode.Disposable {
 
         await this.post(
             VisibleRangesChangeMessage.create(
-                visibleRanges.map(TextRange.clone)
-            )
+                visibleRanges.map(TextRange.clone),
+            ),
         )
     }
 
@@ -362,8 +343,9 @@ export class Preview extends Disposable implements vscode.Disposable {
      * @returns プレビューパネルのタイトル
      */
     private static createTitle(uri: vscode.Uri): string {
-        return getLocalization().PREVIEW_TITLE_FORMAT(
-            vscode.workspace.asRelativePath(uri)
+        return vscode.l10n.t(
+            "Preview ({0})",
+            vscode.workspace.asRelativePath(uri),
         )
     }
 
@@ -422,8 +404,8 @@ export class Preview extends Disposable implements vscode.Disposable {
         if (!custom || configuration.customStyleIncludeDefault) {
             sheets.unshift(
                 webview.asWebviewUri(
-                    context.getExtensionUri(PREVIEW_WEBVIEW_CSS_PATH)
-                )
+                    context.getExtensionUri(PREVIEW_WEBVIEW_CSS_PATH),
+                ),
             )
         }
 
@@ -445,7 +427,7 @@ export class Preview extends Disposable implements vscode.Disposable {
 function parseUserUriAsWebviewUri(
     document: vscode.TextDocument,
     webview: vscode.Webview,
-    string: string
+    string: string,
 ): vscode.Uri {
     if (string.startsWith("http:") || string.startsWith("https:")) {
         return vscode.Uri.parse(string)
