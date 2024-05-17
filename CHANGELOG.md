@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- update: README.mdの説明を拡充
 - refactor: 内部の全面的なリファクタリング
 
 ## 0.1.8 - 2022-06-27
